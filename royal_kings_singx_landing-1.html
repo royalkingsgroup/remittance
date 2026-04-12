@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Royal Kings Group × SingX — Send Money The Royal Way</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#fff;color:#1a1a1a;}
+
+/* NAV */
+.nav{background:#C8102E;padding:8px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #FFD700;position:sticky;top:0;z-index:100;}
+.nav-left{display:flex;align-items:center;gap:14px;}
+.nav-logo{height:72px;width:72px;object-fit:contain;background:transparent;display:block;flex-shrink:0;}
+.nav-brand{font-family:'Cinzel',serif;color:#FFD700;font-size:20px;font-weight:600;letter-spacing:3px;text-transform:uppercase;line-height:1;}
+.nav-right{color:rgba(255,255,255,0.65);font-size:11px;text-align:right;}
+.nav-right strong{color:#FFD700;font-size:14px;display:block;font-family:'Cinzel',serif;letter-spacing:1px;}
+.nav-right span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+
+/* RATE TICKER */
+.ticker{background:#111;padding:9px 0;overflow:hidden;border-bottom:1px solid rgba(255,215,0,0.2);}
+.ticker-inner{display:flex;animation:ticker 32s linear infinite;white-space:nowrap;width:max-content;}
+.ticker-inner:hover{animation-play-state:paused;}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{display:inline-flex;align-items:center;gap:8px;padding:0 26px;border-right:1px solid rgba(255,255,255,0.08);}
+.tick-pair{color:#FFD700;font-size:11px;font-weight:600;letter-spacing:1px;}
+.tick-rate{color:#fff;font-size:12px;font-weight:500;}
+.tick-up{color:#4ade80;font-size:10px;}
+.tick-dn{color:#f87171;font-size:10px;}
+
+/* HERO */
+.hero{background:#C8102E;padding:60px 24px 48px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:340px;height:340px;border-radius:50%;border:50px solid rgba(255,215,0,0.06);}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:250px;height:250px;border-radius:50%;border:38px solid rgba(255,215,0,0.05);}
+.badge{display:inline-block;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.4);color:#FFD700;font-size:11px;letter-spacing:2px;padding:5px 18px;border-radius:20px;margin-bottom:20px;text-transform:uppercase;}
+.hero h1{font-family:'Cinzel',serif;color:#fff;font-size:36px;font-weight:600;line-height:1.2;margin-bottom:14px;}
+.hero h1 span{color:#FFD700;}
+.hero p{color:rgba(255,255,255,0.78);font-size:15px;max-width:500px;margin:0 auto 28px;line-height:1.7;}
+.promo-pill{display:inline-flex;align-items:center;gap:12px;background:#FFD700;color:#8B0000;font-weight:600;font-size:14px;padding:13px 28px;border-radius:34px;margin-bottom:30px;}
+.new-tag{background:#8B0000;color:#FFD700;font-size:10px;padding:2px 9px;border-radius:10px;letter-spacing:1px;}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.btn-gold{background:#FFD700;color:#8B0000;border:none;padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s;}
+.btn-gold:hover{transform:scale(1.03);}
+.btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4);padding:14px 30px;border-radius:8px;font-size:15px;cursor:pointer;transition:border-color .15s;}
+.btn-outline:hover{border-color:rgba(255,255,255,0.8);}
+.trust{color:rgba(255,255,255,0.45);font-size:12px;margin-top:12px;}
+
+/* RATE WIDGET SECTION */
+.rate-section{background:#f8f8f8;padding:50px 24px;}
+.sec-title{text-align:center;font-family:'Cinzel',serif;font-size:24px;color:#C8102E;margin-bottom:8px;}
+.sec-title-gold{text-align:center;font-family:'Cinzel',serif;font-size:24px;color:#FFD700;margin-bottom:8px;}
+.sec-sub{text-align:center;color:#999;font-size:14px;margin-bottom:36px;}
+.sec-sub-white{text-align:center;color:rgba(255,255,255,0.55);font-size:14px;margin-bottom:36px;}
+
+/* CALCULATOR CARD */
+.calc-card{background:#fff;border:0.5px solid #e0e0e0;border-radius:16px;max-width:560px;margin:0 auto 40px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.06);}
+.calc-header{background:#C8102E;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.calc-header h3{font-family:'Cinzel',serif;color:#FFD700;font-size:16px;}
+.calc-live{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);font-size:12px;}
+.live-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.calc-body{padding:24px;}
+.calc-row{display:flex;gap:14px;margin-bottom:18px;align-items:flex-end;}
+.calc-field{flex:1;}
+.calc-field label{display:block;font-size:11px;color:#888;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;}
+.calc-field input{width:100%;padding:13px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:18px;font-weight:600;color:#1a1a1a;outline:none;transition:border-color .15s;}
+.calc-field input:focus{border-color:#C8102E;}
+.calc-field select{width:100%;padding:13px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;color:#1a1a1a;outline:none;background:#fff;cursor:pointer;}
+.swap-btn{width:42px;height:42px;background:#fff0f2;border:1.5px solid #C8102E;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#C8102E;flex-shrink:0;margin-bottom:2px;transition:background .15s;}
+.swap-btn:hover{background:#C8102E;color:#fff;}
+.calc-result{background:#f8f8f8;border-radius:10px;padding:18px 20px;margin-bottom:16px;}
+.calc-result .amount{font-size:28px;font-weight:700;color:#1a1a1a;display:block;}
+.calc-result .rate-hint{font-size:12px;color:#999;margin-top:4px;}
+.calc-result .rate-hint span{color:#C8102E;font-weight:600;}
+.fee-row{display:flex;justify-content:space-between;font-size:13px;color:#666;padding:8px 0;border-top:1px dashed #e0e0e0;margin-top:8px;}
+.fee-row span{color:#1a1a1a;font-weight:600;}
+.calc-cta{width:100%;background:#C8102E;color:#fff;border:none;padding:15px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;}
+.calc-cta:hover{background:#a00d24;}
+.powered-row{text-align:center;margin-top:10px;font-size:11px;color:#aaa;}
+.powered-row span{color:#C8102E;font-weight:600;}
+
+/* RATE CORRIDOR CARDS */
+.rate-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;max-width:940px;margin:0 auto;}
+.rate-card{background:#fff;border:0.5px solid #e8e8e8;border-radius:12px;padding:18px 16px;text-align:center;border-top:3px solid #C8102E;cursor:pointer;transition:box-shadow .2s;}
+.rate-card:hover{box-shadow:0 4px 20px rgba(200,16,46,0.1);}
+.rate-card .flag{font-size:26px;margin-bottom:8px;}
+.rate-card .corridor{font-size:11px;color:#bbb;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;}
+.rate-card .rate-val{font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:4px;}
+.rate-card .rate-sub{font-size:11px;color:#bbb;}
+.rate-card .rate-change{font-size:11px;margin-top:6px;padding:2px 9px;border-radius:10px;display:inline-block;}
+.up{background:#f0fdf4;color:#16a34a;}
+.dn{background:#fef2f2;color:#dc2626;}
+
+/* PROMO BAR */
+.promo-bar{background:#FFD700;padding:26px 24px;text-align:center;}
+.promo-bar h3{color:#8B0000;font-family:'Cinzel',serif;font-size:18px;margin-bottom:6px;}
+.promo-sub{color:#8B0000;font-size:13px;opacity:.8;margin-bottom:14px;}
+.code-wrap{display:inline-flex;align-items:center;gap:16px;background:#fff;border:2.5px dashed #C8102E;border-radius:10px;padding:12px 26px;}
+.code-label{font-size:10px;color:#8B0000;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px;}
+.promo-code{font-family:monospace;font-size:24px;font-weight:700;color:#C8102E;letter-spacing:5px;}
+.copy-btn{background:#C8102E;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;}
+.fine{font-size:11px;color:#8B0000;opacity:.6;margin-top:10px;}
+
+/* STATS BAR */
+.stats{display:flex;justify-content:center;background:#8B0000;flex-wrap:wrap;}
+.stat{text-align:center;padding:24px 30px;border-right:1px solid rgba(255,255,255,0.1);}
+.stat:last-child{border-right:none;}
+.stat strong{display:block;color:#FFD700;font-size:26px;font-family:'Cinzel',serif;}
+.stat span{color:rgba(255,255,255,0.55);font-size:12px;}
+
+/* HOW IT WORKS */
+.sec{padding:52px 24px;}
+.sec-gray{background:#f8f8f8;}
+.sec-black{background:#111;}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:920px;margin:0 auto;}
+.step-card{background:#fff;border:0.5px solid #e5e5e5;border-radius:14px;padding:28px 20px 22px;text-align:center;position:relative;transition:box-shadow .2s;}
+.step-card:hover{box-shadow:0 4px 20px rgba(200,16,46,0.08);}
+.step-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#C8102E;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;}
+.step-icon{font-size:28px;margin-bottom:12px;}
+.step-card h4{font-size:14px;font-weight:600;margin-bottom:7px;color:#1a1a1a;}
+.step-card p{font-size:13px;color:#888;line-height:1.6;}
+
+/* FEATURES — BLACK BACKGROUND */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:940px;margin:0 auto;}
+.feat{display:flex;gap:14px;padding:20px;border:0.5px solid rgba(255,215,0,0.2);border-radius:12px;border-left:3px solid #FFD700;background:rgba(255,255,255,0.04);transition:background .2s;}
+.feat:hover{background:rgba(255,255,255,0.07);}
+.feat-ico{width:42px;height:42px;min-width:42px;background:rgba(255,215,0,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.feat h5{font-size:14px;font-weight:600;margin-bottom:5px;color:#FFD700;}
+.feat p{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.55;}
+
+/* REFERRAL BOX */
+.refbox{background:#C8102E;padding:52px 24px;text-align:center;}
+.refbox h2{font-family:'Cinzel',serif;color:#FFD700;font-size:24px;margin-bottom:10px;}
+.refbox p{color:rgba(255,255,255,0.75);font-size:15px;margin-bottom:26px;}
+.link-row{display:flex;max-width:580px;margin:0 auto 12px;border-radius:10px;overflow:hidden;border:2px solid #FFD700;}
+.link-input{flex:1;padding:14px 16px;background:rgba(255,255,255,0.1);color:#fff;border:none;font-size:13px;outline:none;}
+.link-input::placeholder{color:rgba(255,255,255,0.4);}
+.link-copy{background:#FFD700;color:#8B0000;border:none;padding:14px 22px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;}
+.hint{color:rgba(255,255,255,0.4);font-size:12px;}
+
+/* FOOTER */
+footer{background:#060606;padding:28px 24px;text-align:center;border-top:2px solid #C8102E;}
+footer p{color:rgba(255,255,255,0.28);font-size:12px;line-height:1.9;}
+footer span{color:#FFD700;}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <div class="nav-left">
+    <img class="nav-logo" src="data:image/png;base64,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" alt="Royal Kings Group"/>
+    <span class="nav-brand">ROYAL KINGS GROUP</span>
+  </div>
+  <div class="nav-right">
+    <strong>SingX</strong>
+    <span>Powered by SingX</span>
+  </div>
+</nav>
+
+<!-- ═══ RATE TICKER ═══ -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="badge">✦ Exclusive Affiliate Offer</div>
+  <h1>Send Money Abroad<br/><span>The Royal Way</span></h1>
+  <p>Transfer funds globally at live interbank rates — exclusively through Royal Kings Group's partnership with SingX. Trusted, fast, and built for our community.</p>
+  <div class="promo-pill">
+    <span class="new-tag">NEW</span>
+    🎁 Get <strong style="font-size:20px;margin:0 5px;">$5 FREE</strong> on your first transfer
+  </div>
+  <div class="cta-row">
+    <button class="btn-gold" onclick="document.getElementById('rate-widget').scrollIntoView({behavior:'smooth'})">Check Live Rates →</button>
+    <button class="btn-outline" onclick="document.getElementById('reflink').scrollIntoView({behavior:'smooth'})">Get My Link</button>
+  </div>
+  <p class="trust">✓ Live Interbank Rates &nbsp;·&nbsp; ✓ MAS Licensed &nbsp;·&nbsp; ✓ 180+ Countries</p>
+</section>
+
+<!-- ═══ RATE WIDGET ═══ -->
+<section class="rate-section" id="rate-widget">
+  <div class="sec-title">Live Rate Calculator</div>
+  <div class="sec-sub">Real-time rates — what you see is what you get, via SingX</div>
+
+  <div class="calc-card">
+    <div class="calc-header">
+      <h3>💱 Rate Calculator</h3>
+      <div class="calc-live"><div class="live-dot"></div><span id="rate-status">Loading rates...</span></div>
+    </div>
+    <div class="calc-body">
+      <div class="calc-row">
+        <div class="calc-field">
+          <label>You Send (SGD)</label>
+          <input type="number" id="send-amount" value="1000" min="1" oninput="calcRate()"/>
+        </div>
+        <button class="swap-btn" onclick="calcRate()" title="Refresh">⇄</button>
+        <div class="calc-field">
+          <label>They Receive</label>
+          <select id="target-currency" onchange="calcRate()">
+            <option value="INR">🇮🇳 INR — Indian Rupee</option>
+            <option value="PHP">🇵🇭 PHP — Philippine Peso</option>
+            <option value="BDT">🇧🇩 BDT — Bangladeshi Taka</option>
+            <option value="MYR">🇲🇾 MYR — Malaysian Ringgit</option>
+            <option value="PKR">🇵🇰 PKR — Pakistani Rupee</option>
+            <option value="LKR">🇱🇰 LKR — Sri Lankan Rupee</option>
+            <option value="IDR">🇮🇩 IDR — Indonesian Rupiah</option>
+            <option value="USD">🇺🇸 USD — US Dollar</option>
+            <option value="AUD">🇦🇺 AUD — Australian Dollar</option>
+            <option value="GBP">🇬🇧 GBP — British Pound</option>
+            <option value="EUR">🇪🇺 EUR — Euro</option>
+            <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+            <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+            <option value="HKD">🇭🇰 HKD — Hong Kong Dollar</option>
+            <option value="THB">🇹🇭 THB — Thai Baht</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-result">
+        <span class="amount" id="result-amount">—</span>
+        <div class="rate-hint">Rate: <span id="rate-display">—</span> &nbsp;·&nbsp; Updated: <span id="rate-time">—</span></div>
+        <div class="fee-row"><span>SingX Transfer Fee</span><span id="fee-display">SGD 3.00</span></div>
+        <div class="fee-row"><span>Total you pay</span><span id="total-display">SGD 1,003.00</span></div>
+      </div>
+      <button class="calc-cta" onclick="window.open('https://www.singx.co?ref=ROYALKINGS&promo=RK2024','_blank')">
+        Transfer Now via SingX + Get $5 Bonus →
+      </button>
+      <div class="powered-row">Live rates via open.er-api.com · Powered by <span>SingX</span> · Use code <span>RK2024</span></div>
+    </div>
+  </div>
+
+  <div class="sec-sub" style="margin-bottom:22px;">Click any corridor to load it into the calculator instantly</div>
+  <div class="rate-cards" id="rate-cards">
+    <div style="grid-column:1/-1;text-align:center;color:#bbb;padding:32px;font-size:14px;">Loading live rates...</div>
+  </div>
+</section>
+
+<!-- ═══ PROMO BAR ═══ -->
+<div class="promo-bar">
+  <h3>🎉 Royal Kings Group Exclusive — First Transfer Bonus</h3>
+  <p class="promo-sub">Enter the code below when registering via our link to claim your $5 welcome bonus instantly</p>
+  <div class="code-wrap">
+    <div>
+      <span class="code-label">Your Promo Code</span>
+      <span class="promo-code">RK2024</span>
+    </div>
+    <button class="copy-btn" onclick="navigator.clipboard.writeText('RK2024');this.textContent='✓ Copied!';setTimeout(()=>this.textContent='Copy',2200)">Copy</button>
+  </div>
+  <p class="fine">*Valid for new SingX users only. Min. transfer SGD 200. One-time use per customer.</p>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats">
+  <div class="stat"><strong>0.3%</strong><span>Low Transfer Fee</span></div>
+  <div class="stat"><strong>180+</strong><span>Countries</span></div>
+  <div class="stat"><strong>24hr</strong><span>Fast Delivery</span></div>
+  <div class="stat"><strong>$5</strong><span>Welcome Bonus</span></div>
+  <div class="stat"><strong>MAS</strong><span>Licensed</span></div>
+</div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="sec sec-gray">
+  <div class="sec-title">How It Works</div>
+  <div class="sec-sub">Four simple steps to transfer money anywhere in the world</div>
+  <div class="steps-grid">
+    <div class="step-card"><div class="step-num">1</div>
+      <div class="step-icon">🔗</div>
+      <h4>Click Our Exclusive Link</h4>
+      <p>Use Royal Kings Group's referral link to access SingX and get your $5 welcome bonus automatically applied.</p>
+    </div>
+    <div class="step-card"><div class="step-num">2</div>
+      <div class="step-icon">📋</div>
+      <h4>Register & Enter Code</h4>
+      <p>Create your SingX account in minutes. Enter promo code <strong>RK2024</strong> at sign-up to unlock your bonus.</p>
+    </div>
+    <div class="step-card"><div class="step-num">3</div>
+      <div class="step-icon">💱</div>
+      <h4>Check Rates & Transfer</h4>
+      <p>Use the live rate calculator above. Lock in your rate and send money globally at the interbank rate.</p>
+    </div>
+    <div class="step-card"><div class="step-num">4</div>
+      <div class="step-icon">👑</div>
+      <h4>Earn Royal Rewards</h4>
+      <p>Refer friends via your personal link and earn every time someone in your network transfers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY CHOOSE — BLACK THEME ═══ -->
+<section class="sec sec-black">
+  <div class="sec-title-gold">Why Choose This Partnership</div>
+  <div class="sec-sub-white">The best of Royal Kings Group's network and SingX's technology</div>
+  <div class="feat-grid">
+    <div class="feat">
+      <div class="feat-ico">🏦</div>
+      <div><h5>MAS Licensed & Regulated</h5><p>SingX is fully licensed by the Monetary Authority of Singapore — your funds are always protected.</p></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">📈</div>
+      <div><h5>Live Interbank Rates</h5><p>No FX markup — SingX uses the real mid-market rate. What you see in the calculator is what you get.</p></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">⚡</div>
+      <div><h5>Instant to 24hr Transfers</h5><p>Most transfers arrive within hours. Track every step in real-time via the SingX app.</p></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🔒</div>
+      <div><h5>Bank-Grade Security</h5><p>End-to-end encryption and multi-factor authentication protecting every single transaction.</p></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">🌍</div>
+      <div><h5>180+ Countries Covered</h5><p>India, Philippines, Bangladesh, Malaysia and many more. One platform, truly global reach.</p></div>
+    </div>
+    <div class="feat">
+      <div class="feat-ico">👑</div>
+      <div><h5>Royal Kings Group Support</h5><p>Our dedicated team is here to assist you at every step of your transfer journey.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REFERRAL LINK ═══ -->
+<section class="refbox" id="reflink">
+  <h2>Your Exclusive Transfer Link</h2>
+  <p>Share this link with your network — anyone who registers gets $5 on their first transfer automatically</p>
+  <div class="link-row">
+    <input class="link-input" type="text" value="singx.co?ref=ROYALKINGS&promo=RK2024" readonly/>
+    <button class="link-copy" onclick="navigator.clipboard.writeText('https://www.singx.co?ref=ROYALKINGS&promo=RK2024');this.textContent='✓ Copied!';setTimeout(()=>this.textContent='Copy Link',2200)">Copy Link</button>
+  </div>
+  <p class="hint">WhatsApp it · Post on social media · Email your clients · Every signup earns you commission</p>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2024 <span>Royal Kings Group</span> · In official partnership with <span>SingX Pte Ltd</span><br/>
+  SingX is fully licensed by the Monetary Authority of Singapore (MAS) under the Payment Services Act.<br/>
+  Exchange rates are indicative only. Actual rates confirmed at time of transfer on SingX.<br/>
+  <span>RK2024</span> promo valid for new users only. Terms &amp; conditions apply. Min transfer SGD 200.</p>
+</footer>
+
+<script>
+const CORRIDORS=[
+  {code:'INR',flag:'🇮🇳',country:'India',prev:71.5},
+  {code:'PHP',flag:'🇵🇭',country:'Philippines',prev:46.5},
+  {code:'BDT',flag:'🇧🇩',country:'Bangladesh',prev:82.0},
+  {code:'MYR',flag:'🇲🇾',country:'Malaysia',prev:3.10},
+  {code:'PKR',flag:'🇵🇰',country:'Pakistan',prev:215.0},
+  {code:'LKR',flag:'🇱🇰',country:'Sri Lanka',prev:230.0},
+  {code:'IDR',flag:'🇮🇩',country:'Indonesia',prev:11500},
+  {code:'USD',flag:'🇺🇸',country:'USA',prev:0.765},
+  {code:'AUD',flag:'🇦🇺',country:'Australia',prev:1.11},
+  {code:'GBP',flag:'🇬🇧',country:'UK',prev:0.582},
+];
+
+let rates={};
+
+async function fetchRates(){
+  try{
+    const res=await fetch('https://open.er-api.com/v6/latest/SGD');
+    const d=await res.json();
+    if(d&&d.rates){
+      rates=d.rates;
+      const t=new Date().toLocaleTimeString('en-SG',{hour:'2-digit',minute:'2-digit'});
+      document.getElementById('rate-status').textContent='Live · '+t;
+      document.getElementById('rate-time').textContent=t;
+      renderAll(); calcRate();
+    }
+  }catch(e){
+    rates={INR:72.02,PHP:47.03,BDT:85.50,MYR:3.13,PKR:217.9,LKR:238.5,IDR:11820,USD:0.7767,AUD:1.127,GBP:0.5886,EUR:0.6743,JPY:123.9,CNY:5.63,HKD:6.05,THB:26.2};
+    document.getElementById('rate-status').textContent='Reference Rates (indicative)';
+    document.getElementById('rate-time').textContent='Reference';
+    renderAll(); calcRate();
+  }
+}
+
+function fmt(r){
+  if(r>=1000)return Math.round(r).toLocaleString();
+  if(r>=10)return r.toFixed(2);
+  return r.toFixed(4);
+}
+
+function renderAll(){
+  // Corridor cards
+  const box=document.getElementById('rate-cards');
+  box.innerHTML='';
+  CORRIDORS.forEach(c=>{
+    const r=rates[c.code]||c.prev;
+    const pct=(r-c.prev)/c.prev*100;
+    const up=pct>=0;
+    const el=document.createElement('div');
+    el.className='rate-card';
+    el.innerHTML='<div class="flag">'+c.flag+'</div><div class="corridor">SGD → '+c.code+'</div><div class="rate-val">'+fmt(r)+'</div><div class="rate-sub">per 1 SGD · '+c.country+'</div><div class="rate-change '+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(pct).toFixed(2)+'%</div>';
+    el.onclick=()=>{document.getElementById('target-currency').value=c.code;calcRate();document.getElementById('rate-widget').scrollIntoView({behavior:'smooth'});};
+    box.appendChild(el);
+  });
+  // Ticker
+  const items=CORRIDORS.map(c=>{
+    const r=rates[c.code]||c.prev;
+    const pct=(r-c.prev)/c.prev*100;
+    const up=pct>=0;
+    return '<div class="tick-item"><span class="tick-pair">SGD/'+c.code+'</span><span class="tick-rate">'+c.flag+' '+fmt(r)+'</span><span class="'+(up?'tick-up':'tick-dn')+'">'+(up?'▲':'▼')+' '+Math.abs(pct).toFixed(2)+'%</span></div>';
+  }).join('');
+  document.getElementById('ticker-inner').innerHTML=items+items;
+}
+
+function calcRate(){
+  const amt=parseFloat(document.getElementById('send-amount').value)||0;
+  const cur=document.getElementById('target-currency').value;
+  const r=rates[cur]; if(!r||!amt)return;
+  const recv=amt*r;
+  const fee=amt<500?3:amt<2000?5:8;
+  document.getElementById('result-amount').textContent=(recv>=1000?Math.round(recv).toLocaleString():recv.toFixed(2))+' '+cur;
+  document.getElementById('rate-display').textContent='1 SGD = '+fmt(r)+' '+cur;
+  document.getElementById('fee-display').textContent='SGD '+fee.toFixed(2);
+  document.getElementById('total-display').textContent='SGD '+(amt+fee).toLocaleString('en-SG',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+fetchRates();
+setInterval(fetchRates,60000);
+</script>
+</body>
+</html>
