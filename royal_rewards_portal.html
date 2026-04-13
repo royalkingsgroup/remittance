@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Royal Kings Group Royal Rewards — earn points on every SingX transfer. Bronze, Silver, Gold and Platinum tiers."/>
+<meta name="theme-color" content="#C8102E"/>
+<title>Royal Kings Group — Royal Rewards Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --red:#C8102E;--red-dk:#9B0B22;--red-dp:#7A0018;
+  --gold:#FFD700;--gold-dk:#E6B800;
+  --black:#0D0D0D;
+  --s1:#fff;--s2:#F7F7FB;--s3:#EEEEF5;
+  --txt1:#1A1A2E;--txt2:#4A4A68;--txtm:#9999AA;
+  --border:rgba(0,0,0,0.09);
+  --r-sm:6px;--r-md:12px;--r-lg:18px;--r-full:999px;
+  --sh-sm:0 1px 4px rgba(0,0,0,.07);
+  --sh-md:0 4px 18px rgba(0,0,0,.09);
+  --sh-lg:0 12px 40px rgba(0,0,0,.13);
+  --sh-gold:0 6px 24px rgba(255,215,0,.25);
+  --sh-red:0 6px 24px rgba(200,16,46,.25);
+  --tf:150ms cubic-bezier(.4,0,.2,1);
+  --tb:260ms cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--s2);color:var(--txt1);-webkit-font-smoothing:antialiased;min-height:100vh;}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;}
+.hidden{display:none!important;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* DB STATUS BANNER */
+.db-banner{padding:8px 18px;font-size:12px;font-weight:600;text-align:center;letter-spacing:.5px;}
+.db-firebase{background:rgba(66,133,244,.12);color:#1a73e8;border-bottom:1px solid rgba(66,133,244,.2);}
+.db-local{background:rgba(255,193,7,.12);color:#b45309;border-bottom:1px solid rgba(255,193,7,.2);}
+
+/* AUTH */
+#screen-auth{background:linear-gradient(135deg,var(--red-dp) 0%,var(--red-dk) 40%,var(--red) 100%);align-items:center;justify-content:center;padding:24px;}
+.auth-card{background:#fff;border-radius:20px;width:100%;max-width:440px;box-shadow:0 24px 60px rgba(0,0,0,.25);overflow:hidden;}
+.auth-header{background:linear-gradient(135deg,var(--red) 0%,var(--red-dk) 100%);padding:26px 32px 22px;text-align:center;border-bottom:3px solid var(--gold);}
+.auth-logo{width:58px;height:58px;border-radius:50%;margin:0 auto 10px;display:block;}
+.auth-brand{font-family:'Cinzel',serif;color:var(--gold);font-size:17px;font-weight:700;letter-spacing:2px;display:block;}
+.auth-sub{color:rgba(255,255,255,.6);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);}
+.auth-tab{flex:1;padding:13px;text-align:center;font-size:14px;font-weight:600;color:var(--txtm);border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;transition:color var(--tf),border-color var(--tf);}
+.auth-tab.active{color:var(--red);border-bottom-color:var(--red);}
+.auth-body{padding:26px 30px;}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:700;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase;}
+.form-input{padding:11px 14px;border:1.5px solid var(--s3);border-radius:var(--r-md);font-size:14px;color:var(--txt1);background:var(--s2);outline:none;transition:border-color var(--tf),box-shadow var(--tf);}
+.form-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.1);background:#fff;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-auth{width:100%;padding:13px;background:linear-gradient(135deg,var(--red) 0%,var(--red-dk) 100%);color:#fff;border:none;border-radius:var(--r-md);font-size:15px;font-weight:700;box-shadow:var(--sh-red);transition:opacity var(--tf),transform var(--tf);margin-top:4px;}
+.btn-auth:hover{opacity:.9;transform:translateY(-1px);}
+.auth-error{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;padding:9px 14px;border-radius:var(--r-sm);font-size:13px;margin-bottom:12px;}
+.demo-box{background:rgba(200,16,46,.05);border:1px dashed rgba(200,16,46,.2);border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:var(--txt2);margin-top:12px;}
+.demo-box strong{color:var(--red);}
+
+/* NAV */
+.app-nav{background:var(--red);border-bottom:3px solid var(--gold);padding:0 clamp(14px,3vw,32px);height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh-md);flex-shrink:0;}
+.nav-left{display:flex;align-items:center;gap:10px;}
+.nav-logo{width:48px;height:48px;object-fit:contain;}
+.nav-brand{font-family:'Cinzel',serif;color:var(--gold);font-size:clamp(11px,2vw,16px);font-weight:700;letter-spacing:1.5px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-pts-badge{background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.4);color:var(--gold);font-size:13px;font-weight:700;padding:5px 12px;border-radius:var(--r-full);display:flex;align-items:center;gap:5px;}
+.nav-user-btn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:5px 12px 5px 7px;border-radius:var(--r-full);font-size:13px;}
+.nav-avatar{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--red-dp);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.nav-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.75);padding:6px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;transition:border-color var(--tf),color var(--tf);}
+.nav-btn:hover{border-color:rgba(255,255,255,.6);color:#fff;}
+.nav-link-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:var(--gold);font-size:12px;font-weight:700;padding:6px 12px;border-radius:var(--r-full);text-decoration:none;white-space:nowrap;}
+
+/* DASHBOARD */
+.dash{flex:1;padding:clamp(16px,3vw,32px) clamp(14px,3vw,32px);max-width:1200px;margin:0 auto;width:100%;}
+.page-title{font-family:'Cinzel',serif;font-size:clamp(17px,3vw,24px);font-weight:700;margin-bottom:5px;}
+.page-sub{font-size:14px;color:var(--txtm);margin-bottom:20px;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:18px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 18px;box-shadow:var(--sh-sm);}
+.stat-icon{font-size:20px;margin-bottom:7px;}
+.stat-label{font-size:11px;font-weight:700;color:var(--txtm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.stat-value{font-size:24px;font-weight:800;letter-spacing:-.5px;}
+.stat-sub{font-size:12px;color:var(--txtm);margin-top:3px;}
+
+/* TIER CARD */
+.tier-hero{border-radius:var(--r-lg);padding:22px 24px;position:relative;overflow:hidden;margin-bottom:18px;}
+.tier-glow{position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08);}
+.tier-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:4px;}
+.tier-name{font-family:'Cinzel',serif;font-size:28px;font-weight:700;margin-bottom:4px;}
+.tier-pts{font-size:14px;opacity:.8;margin-bottom:12px;}
+.tier-bar-wrap{background:rgba(255,255,255,.15);border-radius:var(--r-full);height:8px;overflow:hidden;margin-bottom:5px;}
+.tier-bar{height:100%;border-radius:var(--r-full);background:rgba(255,255,255,.85);transition:width .7s cubic-bezier(.4,0,.2,1);}
+.tier-next{font-size:12px;opacity:.7;}
+.tier-perks{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+.tier-perk{font-size:11px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:var(--r-full);}
+.t-bronze{background:linear-gradient(135deg,#7B4A00,#CD7F32);color:#FFE4B5;}
+.t-silver{background:linear-gradient(135deg,#374151,#6B7280);color:#F1F5F9;}
+.t-gold{background:linear-gradient(135deg,#78350F,#B45309);color:#FEF3C7;}
+.t-platinum{background:linear-gradient(135deg,#0F172A,#1E3A5F);color:#E8F4FD;}
+
+/* SECTION CARDS */
+.sec-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-sm);margin-bottom:16px;overflow:hidden;}
+.sec-head{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:14px;font-weight:700;}
+.sec-body{padding:18px 20px;}
+
+/* TABLE */
+.rk-table{width:100%;border-collapse:collapse;font-size:13px;}
+.rk-table th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;color:var(--txtm);text-transform:uppercase;letter-spacing:.5px;background:var(--s2);border-bottom:1px solid var(--border);}
+.rk-table td{padding:11px 13px;border-bottom:1px solid var(--s3);color:var(--txt2);vertical-align:middle;}
+.rk-table tr:last-child td{border-bottom:none;}
+.rk-table tr:hover td{background:var(--s2);}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:var(--r-full);}
+.b-completed{background:#f0fdf4;color:#16a34a;}
+.b-pending{background:#fffbeb;color:#d97706;}
+.b-failed{background:#fef2f2;color:#dc2626;}
+
+/* REDEEM */
+.redeem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px;}
+.redeem-card{background:var(--s1);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:18px 15px;text-align:center;transition:transform var(--tf),border-color var(--tf),box-shadow var(--tf);}
+.redeem-card:hover{transform:translateY(-2px);border-color:var(--gold);box-shadow:var(--sh-gold);}
+.redeem-card.featured{border-color:rgba(200,16,46,.3);background:linear-gradient(180deg,rgba(200,16,46,.03) 0%,#fff 100%);}
+.redeem-icon{font-size:30px;margin-bottom:8px;}
+.redeem-title{font-size:14px;font-weight:700;margin-bottom:3px;}
+.redeem-pts{font-size:12px;color:var(--txtm);margin-bottom:4px;}
+.redeem-desc{font-size:11px;color:var(--txtm);}
+.redeem-flight-badge{display:inline-block;background:rgba(200,16,46,.08);color:var(--red);font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);letter-spacing:.5px;margin-bottom:6px;}
+.redeem-btn{margin-top:12px;width:100%;padding:9px;background:var(--red);color:#fff;border:none;border-radius:var(--r-md);font-size:13px;font-weight:700;transition:opacity var(--tf);}
+.redeem-btn:hover{opacity:.87;}
+.redeem-btn:disabled{background:var(--s3);color:var(--txtm);cursor:not-allowed;}
+
+/* EARN GRID */
+.earn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px;}
+.earn-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:15px;text-align:center;}
+.earn-icon{font-size:24px;margin-bottom:7px;}
+.earn-pts{font-size:18px;font-weight:800;color:var(--red);}
+.earn-desc{font-size:11px;color:var(--txtm);margin-top:3px;}
+
+/* API KEY BOX */
+.key-box{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--border);border-radius:var(--r-md);padding:11px 14px;}
+.key-val{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;font-size:13px;color:var(--txt2);}
+.btn-sm{background:var(--s1);border:1px solid var(--border);color:var(--txt2);padding:5px 12px;border-radius:var(--r-sm);font-size:12px;font-weight:600;transition:background var(--tf),border-color var(--tf);}
+.btn-sm:hover{background:var(--s2);border-color:var(--red);color:var(--red);}
+
+/* ADMIN */
+.admin-tabs{display:flex;overflow-x:auto;border-bottom:2px solid var(--border);margin-bottom:18px;background:var(--s1);border-radius:var(--r-lg) var(--r-lg) 0 0;}
+.adm-tab{padding:12px 18px;font-size:13px;font-weight:600;color:var(--txtm);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color var(--tf),border-color var(--tf);}
+.adm-tab.active{color:var(--red);border-bottom-color:var(--red);}
+.adm-panel{display:none;}
+.adm-panel.active{display:block;}
+
+/* API DOCS */
+.code-block{background:#1a1a2e;border-radius:var(--r-md);padding:16px 18px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;color:#e2e8f0;overflow-x:auto;margin:10px 0;}
+.ck{color:#f9a8d4;} .cs{color:#86efac;} .cn{color:#7dd3fc;} .cc{color:#64748b;}
+.ep-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:var(--r-full);margin-bottom:7px;}
+.ep-post{background:rgba(34,197,94,.12);color:#16a34a;}
+.ep-get{background:rgba(59,130,246,.12);color:#2563eb;}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:540px){.form-grid{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fl{font-size:11px;font-weight:700;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase;}
+.fi{padding:10px 13px;border:1.5px solid var(--s3);border-radius:var(--r-md);font-size:14px;color:var(--txt1);background:var(--s2);outline:none;transition:border-color var(--tf);}
+.fi:focus{border-color:var(--red);background:#fff;}
+.fs{padding:10px 13px;border:1.5px solid var(--s3);border-radius:var(--r-md);font-size:14px;background:var(--s2);outline:none;cursor:pointer;}
+.btn-red{background:var(--red);color:#fff;border:none;padding:10px 20px;border-radius:var(--r-md);font-size:13px;font-weight:700;transition:opacity var(--tf);}
+.btn-red:hover{opacity:.88;}
+
+/* POPUP */
+.pts-popup{position:fixed;bottom:90px;right:24px;z-index:9999;background:linear-gradient(135deg,var(--red),var(--red-dk));color:#fff;border-radius:var(--r-lg);padding:16px 20px;box-shadow:0 16px 48px rgba(200,16,46,.4);transform:translateY(120px);opacity:0;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s;min-width:240px;border:2px solid var(--gold);}
+.pts-popup.show{transform:translateY(0);opacity:1;}
+.popup-pts{font-size:26px;font-weight:800;color:var(--gold);}
+.popup-lbl{font-size:13px;opacity:.8;margin-top:2px;}
+
+/* MISC */
+.empty{text-align:center;padding:36px;color:var(--txtm);}
+.success-bar{background:#f0fdf4;border:1px solid #86efac;color:#16a34a;padding:9px 13px;border-radius:var(--r-sm);font-size:13px;margin-bottom:12px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.pts-preview{background:rgba(200,16,46,.05);border:1px solid rgba(200,16,46,.18);border-radius:var(--r-md);padding:13px 15px;margin-top:14px;}
+.pts-preview-title{font-size:11px;font-weight:700;color:var(--txtm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+@media(max-width:480px){.form-row{grid-template-columns:1fr;} .redeem-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:480px){.nav-link-btn{display:inline-flex;}}
+</style>
+</head>
+<body>
+
+<!-- ════ AUTH ════ -->
+<div class="screen active" id="screen-auth">
+  <div class="auth-card">
+    <div class="auth-header">
+      <img class="auth-logo" src="data:image/png;base64,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" alt="Royal Kings Group"/>
+      <span class="auth-brand">ROYAL KINGS GROUP</span>
+      <span class="auth-sub">Royal Rewards — Member Portal</span>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-btn-login" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="tab-btn-reg" onclick="switchTab('register')">Create Account</button>
+    </div>
+    <div class="auth-body">
+      <div id="db-status-auth" class="db-local" style="border-radius:var(--r-sm);margin-bottom:12px;padding:7px 12px;font-size:12px;font-weight:600;text-align:center;">&#128447; Using local storage — connect Firebase for real-time sync</div>
+      <div id="tab-login">
+        <div id="login-error" class="auth-error hidden"></div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" id="login-email" placeholder="you@email.com" autocomplete="email"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="login-pw" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+        </div>
+        <button class="btn-auth" onclick="doLogin()">Sign In &rarr;</button>
+        <div class="demo-box"><strong>Demo accounts:</strong><br/>User: <strong>user@rk.com</strong> / <strong>password123</strong><br/>Admin: <strong>admin@rk.com</strong> / <strong>admin123</strong></div>
+      </div>
+      <div id="tab-register" class="hidden">
+        <div id="reg-error" class="auth-error hidden"></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" type="text" id="reg-fname" placeholder="John"/></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" type="text" id="reg-lname" placeholder="Doe"/></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" id="reg-email" placeholder="you@email.com"/></div>
+        <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" type="tel" id="reg-phone" placeholder="+65 9xxx xxxx"/></div>
+        <div class="form-group"><label class="form-label">Password (min 6 chars)</label><input class="form-input" type="password" id="reg-pw" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"/></div>
+        <div class="form-group"><label class="form-label">Referral Code (optional)</label><input class="form-input" type="text" id="reg-ref" placeholder="e.g. RK-JOHN01"/></div>
+        <button class="btn-auth" onclick="doRegister()">Create Account &rarr;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ USER DASHBOARD ════ -->
+<div class="screen" id="screen-user">
+  <nav class="app-nav">
+    <div class="nav-left">
+      <img class="nav-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAklUlEQVR42tWcd7RV1dX2f3OtvU+9HS4XLh1BEUQFsRfAiiV2YzT2WBI1iSXJmxgTY758Jr5Rk6gx9mgSfY3GgjFo1Ig1JjYEVCyAIFzK5dZzT997r/n9cQ5NAbHkTb49xhkDBuy91n72XM+c85lrTeFfcCnI00yxU3kmEkGxAgoXRdp/H5iQhslx7A5Jakd51Lb6qdoGTSbqPN8TgDAMVPOlrMtnu8r0rSjRt7BIOCcDr86FuZdb6UCASFFdbyzQTzVfVRERVdVEqVQ6z1o70PO820Vkvnz+wGCnQYgFEO6IdPwIOKiW+v1TTSMm1kzYdmDjxO3wt9kKM3gArjZNFPNQY4iiCFHBeAbjHFIOMX15dPkqyu8souf1eeTmvrMy3/n+61l6nlgMj59i5Q1QiEDBAu6TAqWqBmDVqlX3PvDAA8cUi0UOOuig1ePGjZv2eQEkCkYgwgrfjOoaDqH3iwOo/3Lt6B32Gnr4QcaftjvhoP4UevsIFi6OwrcXEry3RKLlq8R190ChKFoOEQDfg1QCaaxX29qi/ujh6o8djT96uE3W1+Ov7KD89D9Y+vBfte/dOc930n3Xg7T+6dd2RSeRomAFHFsAlKoaEXGqOiaTybx7xhlnhKoaXnXVVYmRI0de6X1WZO4F+0WIxEp0SdRv0CFR19n9bONXhhx7ytDUl4+k0Nqf7JvvhoW7H5DSC68Y90GbQMEKBvAQPMR6YAwiUnknBVY73KKl4l6dLWVCFIeQRIa0anzPnVxy+lQdePyvvJGrOvfO3z1j70H3/fmyEwNumUX/G8V2riDStXP7eMMHoCeTyeR33XXXVHd3t6nMhcXyma1GiAYdeljq7kdmfqPFG3bRqK+e2mxOOopcb0+U+8ODlB55yrjulSJ4GC8F8RhiDIqCrvltagRABBBEQJ1CqYwL8yghpqFF44fu69InHUWqqdHqXTN4/8Y7O5aXF1/7i8MOufqRvzySV/34ZbfGihYvXnxyfX39Vb7v18+fP//eyZMnny2fkmuMAaee4eEwcfAI4ldtdcLJ47yLzyK3rC3MXH2LDZ57UQSHidciMR9VwLkKIJ9pMQsYQUTQcoArZVHA23NXrbv4nKhm+BAv+sXtLPzD799aRP6/jvCKjxA6qhTgtoCoGwuFQl0qlVoCYD4FOFbATTjppPTzob1+0qhJM8fNfGhc+I3TwpX/9X+188hTvOi5l8SracDUNIE1aBhBFH12cCpvApGrPNMaTE0jXk0j7oVXpevoU70VF/9Yy187MRz71wfH7Tx68p9fCO2Nhx9+eK0IbhZ4m8ZdtGpJ3alUaslll11mVFU+kQXNAm+aSHhzasj4nXM9d2171vk7uEvOcz033EHu5zcag2Jq6ytLwTn+Vy9jECO4vgwOJXXh2a7xm2eqvfJGO/83v5z3aqru5K8Ul8+Z5dSbBuHmLKmCl7g1q3xLLccTI+F9rv6wCaT/sNWdv67P77h12HnCeV701jy8dDMqUrGUf+dlDaIQ5lbjbTOOpv+5IUy9/b73/knn9s1zmVOPsZkHNVJPNgPSBrhvMTjWhDNc8is7NbQ+PPKfM+t7YyZqnzTd07cW4tW1oM79+8GByvJzrjKnd5fQvtN0rycMouEvPVa7U79hDzwSJc4Ra0LdzHL7RACtAecvUfyrO7eOu7X15Ue16/FZrvuE062NJZGaGjQI+U+7NAghlcIm0/SccqbtfOhR1/LyTDd52A43/iWKf3NLQbIfxzkjjYQPueTpk1vH39L094ej1dfeYvI//W/j1Q6qEKZzOMChayMzQVAgWvu3f5GxVMddwxSuEjxU/bkgqiCCTdRRenKmBGWl6c5fRU1/mnXIlJ725dsY98osxbtzM95NNuuthOguU3vI7rVDHhn8yl9d+3W3meKvrhWvbjAaBGsRjmPw17hgIKsRPkJCDGVV8tXxo4/7IlsIyppnpDH4IuS18pHSYtYQLSFQxK19c/F9wkwbya99VZu/c55bMXm6fbFn8ZEnuNwMVbWyiYBSNhXniOBuHtS69d4reGnUi4/WdT35jGYvvcysD44AORwLNeB9LbNQA7JEfN3rx5Muy3IXsptJsYtJIkBKhVx10vIJPMQaq7BVULLiUIUXtMBLLs9YE2cnk+TGsItGLFuZGCPxGSUxEuuNsgak9A8udf2OnM6iXaYXZtWVdzu3Z9UbqhuPk+zGEk7ALL7s1PiRj7z+2LjbbxmRKeRd5msXWK92IBqGG3zNeZS412W4OljNS1Ge16MCq4wjq8qN5Q7e1BIlC5cFq+hvPEaZGEmEENYCtbnLVSeZQghFeEizXFhegVrDlUE7fwuzbGXj3OMyPFTu4R9RnkddH76xDDAeA/DWjeEcNllP6YmZIvvs5VqPOjwud9+9X/Gkqb89eu6i6EfA5R9nQQpWrESPRebX00791rnF754Ztm+/v+f5CRT5SLBngf7i8eOog6tKq0iIZYSfwKjyVpAnaSwGyLiIPbw0A22ML5happAkgZBHN+kpHJBGyIryhOZ40uX4wJV5JchRbyyBKiV1bOenKAksDgoEqvwkPohv2ibaNfyoSUiFE8NSlgGvPxEmrr3be/6WK27az+pXZ0XuIzGS+XDiKUJ0rxfbd7uhu5yrP7s47Drua55xihq70Ui4DPRoxAEmjYoQovjAvKiAFUPWRWRchAHKAq9FeS4JVvGlYCnLJCSBbJQhHZBEeI+Ao0sf8NOgndfCPFqddK+LyKvDiDAnLJAASoBvLPuaNB0aEWwiElcjWCydx37Nc//n6+G2o/Y45x7PP2iaIbz3Q6tqfYDkONDp50+Pjyglft1y05V0XXenCd+YjUnVbjLGMdWl1oCh0Xg0ezFElYHGp8X6a83UirBUQ5LGkkJ4KcxzbOkDOiXC/5Au4YA4sJSQI0sfMC8qkMJgraFNQ0DWTnywjdFsPGIYmjyfZvGoxeA2Y5lEDknVEL0zj+6f32Kab/qZblVKXn/qyacmjmM9t7g+QLOYYsWK+/p1j503/qiTxuYH9w9zV15rvPSADXhnYywfovTDY7CJMdCLkXOOVvEI1a0dyQGrohItxqdHIwQoqJKmInOY9QjZVmJ9UmIoaMX6MupoNT4ro9LaZ0r1hoHiU9CIQV6MoSZGPYboY/hNwxAvPYDcNTeYfFNdNP7400afcOed3xQrbhZT7AYkrSAjWKKJocMaJ+fq/jjonl8nO77zU9H3Fgrx5McmmRFQhyEvSsy3xBzkUN4Lixt4ogbrMdpL8EY5jyD8OD6Q17XIHVEPh9k6ggrLYUX4argCH2Gil+KZMEsZZbyfpC0KKKlbJ+JoxHAvzjATZ4SXYD9STJIEhc1Z0FrzECQoUXr3A6n/2Xe0fOufd9qqOXn7idk3cj8CuXwNQFOZ4o20H7jv9vReMPGMbxyeH9ka9V12hbU1TVuUPhigjLKTJAidY4DxaDU+NcZSVEeT8Un5PpNsksVhiXYXMCGWpoDjutJq5rsiJ3iN1CPEEN6jzKXllTwa9jHI+pSN0B4F1IhllBcnsIYGLPXGsqdfw542zRiJMVHjHCZpclsCTpWPTDxF+O488b5wcDSwtikdPvXn3Cgrz0zVKd6dLHEWkDtYokwalJrc3nhny81X1nX88BrRxcuEWGyLJYoIpUYMPwjauaXcyQJXplYsU/wavhZvxqE0quWfUZ4RXoLFUYk5YZ6EGL4db2FHk8AgBChWDDFrmB0VmBsWCARGeHHaojJTvDSjTYxv+P1RhCUu4Mkgw4ygFxHhKFtHHofZ0ihLQCJHuHg5dT84j9xtf962ZYS95bSut4s/AjEV7kF3e3XFESMO+8LQXCHvyk89bSrEvOWShSAbhKIKvBLmuaHYwen5JYxQn21snHF+koI6YiK0eHES1nBv0M1exYX04lhKyF7FBTwaZEhbjxYvttZCx/lJtjMJ+jnDifkl3FLq4I2ogJMK3yibyRk2GWg5TLKW8vPPm3xPrxt15JEDJy/oOlYs+jRTrJnKAAWhH7VfqTnjWM397n6ECDWfMIOSiq4ZmUpIemlsAF/2G9nXr2WUxLmsuILngizfifXnwEQd42NpECETRiyMSjR6MTLiyBmlzvosiEpkoxArhgmxNAfH6/l2rJmHggw/K7UzySbZ3avhq7F+XBBrRgRCcajo2pRnixNbAUHJ3fEnUqcfo83UnQHCVJ5xRuS+6NZIhzcOnrB3aUSrFB/4qzGxT2A9pvKTEKKSsroc4hQWSsAcinzfH8Aw63NCrJGHg17uLvWgkWNRUKAvCnAog/04SWN4yRX4Z5SnzngM9GKEqvRGIQvLBUyk3Fjs4G9Bhi/FGhlmYnw/1syzmqNNKmO2l0NcGSSqzmtLcXIRJlZH8aHHbXHwAPqP2GG330Q6RgRnsMIQOGTI4QfFiu8sCF3HMpH4x3OPq4h4SF5xOUVqgeHCrsNq2DqZ4PrCat4qF7g4WsFIiXGQV0PcGB4Kesg4RzaK8BRG+gk8MbxdzLHSBSyLAt4p5Ugay0g/gaijpI7lLuDxsI+kMRzr1RMX4UdRO7PLeX5b6GRsOsFOQ9K4VoEEuJzDlCtA6RYkexKP4XpWUHzj7WjokQfbkXAoVip6SCPpAxMH7knnw4+JYD6WlyMgJUJfzuEmeww8OonZyiI1ws00kO+NeHNOnl/fv4K7F3Ri4vBykOf+xAgOyy/izbDAz1OD+Z+wh6VRmZVhJbZJiCFJJXZaGZQYbGPsFqvli14DlxeWExPhgcQILimvxBmYU85z9oQBnHnkQMaOSxKvFYpOSWaUaH7I8nsK1C5yeCmh7Dbv2VQVwaMwc5Y0fekomn5ZdwDa90vz5VDrUunhu4TDBlJ69iVjbGqzenIE1BrD4mLAzGkBLf9dT3wvH9MoiIW8dZhmYdfD6rjrhrHcdtgoXitVcrJbwi5OijXxgSvxalRgjiuyKCwSVOOaQeIxUCrRd0kdC8Iic12Bf0R5ejTiS14DN4Zd1FjD3HKe+0/empt+NYaJB6ShPxQ9RWJgW4T0IXHqrq7lvm2K5EoRcSObJ3DnMDZF6blXTDB4AKn6ETv9V6T1ZipMqNlubGupUMQt/kCIxze5vByQNoZ2Qs5Nr+ILFzbTJFDsdmhQ1UkUCKCvN6TLBZzxnVYu32MIfytlGGx9BopHVh01CHuZFIO8GKZKqttIjG1MrBJNizDEi7O3SRNXyKljhMSoN5bnSlmuP2IkR5/bQmcxIJeJIKgU6nCgZci1Rwwf4LPdBfWcoyuxVvA3XxxDEnHc0mVS6OvT2u3HDpgIO5jBsEPTxPGU318aEeUQazapyViBTCHimNwHzOnLcv+MTnrySk3aYD1wqhXjE7BW8EIhGwZ844xWhvoxZpR78cUwwsZZ5kL+EeTIO0eoygDrM1pibCtx0tVMvc9F/CPIslIDtrYJigZmljJs15DkjFNa6O0r46tgbMXPO1dRFX0f6ust3d0Rs57s4dmoj69k2rCBbJ64jYDmCRcudY07TpBa2NlLIDsmxo6m++331sYSm/RWeSXxpSRfbGjlnTdyPPhiF28tKzJtpwb23bGWwf0tipIruAqBWwiKSuNwjymj6pj5bg9ztcBqF7JzPMlyCXmx3MdgG+NEr4E0hqQaTvYamRFmaNeA3eJ17ChJngj6eFOLlNRxwIQGEv0thb4Az1blVoW6tME5w6IVAU++2sNTr/WwYFmew3dvZrvt0xTmW8xzAaQ2XkJcIxAH89+jZtvR1CLbeUnSW8mQgQQvviTgbRwhASkrtBpW72X44bhBxE4wFIuOfDmir+C44vfLiZzh9On17Do+RTYfYUzFptUTBjX4hKoMszG29RK8FhVYTUijH6MflnNsIwV1GOB8r4knNEd/Y3nfBTRLma1tguHGJ0IZ3BRDzfr0odSkLDOez/Dgszm2Ge5x2sFNHLNPLc0NPpI2UGtgfsDi2Z0VOpBNFCXxCRa8L2avXUhSO8rEqBmsDbVEbZX6+Ub5xwCBYqbGuf6pLnY+402O/9FCXl9YoKm/x1OvZFneEXLEPo1cfMMK3l8REI9VvaGABLC6J2SQ+DwTZtnOJnguzBJFjhF47EmKNIYIJUBpwLC7JBmqloKLeDHMMtbGeSbKMRCfFV1lpLqUnYN0yjJrdo5f3d/BFw9s5JG/99LeFdK/0bJkVZk/PtLFtde3cd59bWTGW2yRDQDeUE71iNpWiatNI9QN86xNN7mYj3b1VNbEhwEyEBaUplE+z41wfH+7ASSObyZy0L/B4sqKKNTVxhg7Kk62ELGwrcxWg32KRYefErKLA+a/X6BolEmSYoULaYvKWBFOt/34sW0mo5X8SYFAlZ97LVwQreTVKIsqjPeSDCfO6ybH3Pl5yl0OmxKisuLFDK+/V8CzwthRCerSPlGohJGSThpWdQXMXpBj+21r6Rnu0/y2o1xQrP0Qp6iCsWh3Ly4WIxavaTBeOpVSz6K5gmyMoJ1CvW9oP8TnqQ/6aG0wNDd6tPTzcBHk+iK+dEQD4wb7nPy9hWw/xmefHdL05Suuuybhcf/9Hcwu59g+kaKHkL+Wexnnp9jaxDnG1FJSXTtPWVPOUeVYqWOMSbCtl+LhUg8BjvGJFM929PHEzG5qay0o5HMhJ+7fQOhCzv3REk7Yv55JE5Pks45UDL5xfH9++8OtuPDoZl4sFSkfFscr6UargmIMmi+IGrDpRMo4a5NGBMLwIzmMGrB5pXdXj7NfXsEBY2tIpS2FkiMoKiYOkjZkHy1y9t9j/Dbqz+++PapStwgh1mRZ+XiBqx5bwYh4go4gpBWPZuOzp0nxTHwk2xGn9CF5wgBFlN0kWfk/Nk6rrXBVbxgyJBbjij8sI/N6iN9gCEpKU5PHY5eM4dpVtRz+hEfnMyX8RosT6O4K6ego45wyNGW5utTLgH0SRFn3UZBEIKho2c7zYkbBbDTsMaAFJbmNzxtTDSft08jBu9WS6QnxPME2CuFKpfuHffT+JEfP22Vq4kI2jIgCkLRQeiEguirPjn6SvDrmUWK4xPh7YhRnmwYK6ihVRbKNKZUllEAd3zL9eDY+ikaxvKUlysCEIEnxx1mC9yJMUigXHQWNSDih4+UivZdk6b0qi+Yh1miIe0I2E3Lc1AaWdpS4viVP7UAfV9bNun7PhGEeNIW3HkFX7VwseOcmOWySjx/VkAkivCaDyyjZu4vk7i5Aj2JrDVHBET8hgU0JmleiXkdwdZ5Lcqv4g9fNIInzs1gLY51PUoUYHuHHCFumEnMyCA9ROEJqGRWL85NSOzdJB/GVyg9+MRBzTQ0mcngDDfHjEkS/yWOSUJxRpPxKQPq0FMlpMSQmlMuO3180nMW5EDPGwRV94MuGPOR7lXmFQeRF+UJOwjAl6aS6yFUWmYAGSs0FaVJTYxQ7Hbmyg3ZH8eWQwqNFwgURJi5QK7i8wxtpSezio1lF00J8TsSzq3P8znYzVGPcERvCeOcTAYWq1ciWqSgEVYYaT4wJLsbWMZ/Tiku5Tjo5clEduy5NEQ4XyCvJqTEKfyygWZBag65SMv83S+EvHslD4sS297HNhrH9fMrbCOH7EYV7CkiqGmY7B6mk4hDNFTOeiwodUgqbpakBNKpEk2VFmippcOaGPGFbRLQ4IloS4foUsWBqqsGWq1ibbTZIXHC9igp4vfCyK4CBn8QGMlnjrCTEW68i8QmkJqgCG6FM1SQ/iLVwQamNOcUC+/RCYEAKYGoF02iIehxigRiYuBDOCcm8HmKaBG+kxQ63+EMttkmQdHUzjBXURdimekw5ICzlur0SfctNb9+23uAWDQkrFmSBPqXvmty6CQpIXNYBs558KL4QLo5wvYppECILtkboIiRlLHuaFJ0a4X3GjQymGul2EbGvSWERuq1i0gIGTKMQLIhwqxyyfi1JQVLVsXMQvBpSfjWsWrIgSVlbC1dCbOtAtZmcBPS1mRLZ96JlK/HGjFRYz5MJmHQFEKmRigmu8cH6ofg8Bm6Vo/eKLMEbIW61QxGS1tBPLYlqfPN57fJQICWGWiyppKAOXKdSejmk98ocmtePFtXdujq2VN/L1JiK9azvwQjwx4xQbVtFgexCL4/OK81fgL/3TmtfQtd/6BYpciAJIXg5oHt2gNYJGliG+3HCgLVkrJ8TQAKUXcX7DAl8Oi/JkLGKdDtQQRKb2a6pm57Imnf3tx1D8bX5FInmmNUwu3P2GxobMdiITaOR+9SfVVKC+AJ9UC45tiZGiNKtEbZqRZ/H5SF0UCkojsKnnFfIKBIXJPkZvoRTkCT+qKGmZ/Y8OuA1Mxfm5t58py2RTIoZOUwplT6x6L2BGSsYD0pGqzs5DIs1IPY5AeSAGMJCLdHfeAwVn7JVjPdpyxrrlpcWS9hhQzRZWyuZuW+vmgdzzNWe5HK5xS97S1YS32fXyEX5itj8GUkiQOlf3aszT4vERdDPASJF8UWY60qMMwnqMESb24z+CXbJuihPbO9dnLdsNfnM+69caaXXAHSTf7z4xHMkD5mKop/agDbmdXYzSd7QErGqB5PPyD0GsAhvaZk9JVk1mM8+YRFQIpKHTNXS356nl+zjCBgiZSE8unTG4+XE1qM80zxYtVjms6JkEHLqONjU8JLmmaslqG6c+tTEjGJEeFELvKMl9jc19FU1pM/K+loKMI2DSIwfa9seeixcDDOJFKN6mTnfypLO5fOejy9q08Qx050L+mAT0uuaowAfAdCYah1oTVYsFATGEuccrx8/d53MlRJ2/fuETS9nWW8MI2t16pekzHVRFxfH+jNYPMo4ZP35iKyby0fmtomPbiyunCFx1IFRaukqOpbMffEsKwtUMeZpnjagdJK9te+2+yR98tGoeIjbxKIuliBXgPKHrCyXR3M5iKrBQq6AKQf0oZxeSnCVa2IiCWT9zRChqzxrY1WUYglK5UpulCtUvFcQsWteuc4M4Li8V7UeA/kiBGEFhGIJcvnKL3KVOeYLaC4L5Y1LiaKgGFKnHkv2t3+SbjK3gvI0U4yZxjORRsjDOw2asXjmX5am4wkT22+qc/nMR6xIjcCYETBpPAxtRYvFCm0KyO6TsFN2g0QM1QCZNB4GtwAh2W1GQmsLLgxxqWT1YQ5tqIUdxqI1aVC3AREzejiMGorGYsjkCagRogFN6PitCdNJcrvvWLlHInT7bdGB/dF8HzJmBLL3zsjuk5DGOrRcQiZth3fAFBg0ANyHZB1rcIUMsX32dum6OrPo4YdWvDiu+QGJYBrPRAYqRfqbX1+R74iWXR/ecI/Ufe9c5zTcMDGoPih55vF4o4aR+srxxA/dF1foIfWdr1ZO33T1kvr+eTgtEZ+6B6mLvkJYaCd+6L6VkkhNirrf/ARiMSiHSF0NtZeeX92gVR3LWrSYIXHUdGK7TUImbI234zi0mMGOGEr64jOJcm2kjj6Yumt+SJhfgT9xHKji7b4T8WMPxi2cj2moQ+tq8PfZHW/yBMKlyzGTt0fLG4YxguBcmbpLznPu5ntlebD0lsvf6cg+xRSPNcrs1KoVPTd8+M3v/u7O1el+jTZ+8HTnsj1UdMnq5kcXId0ZpFhCC0U0LOON3pbY2NGEf/8n0bxX8RrqSU7dl9w1V2OtR/KscwlmzoJFC5CRw3Ad3cT22x3nckixhHR0I/kCeHaDMEGXthE/eAoUS5RvvQujcTTTBx1deEUl/6eZuHSS9MlnEs5+E7IFUqceT/j48+jyDsK2lTgBt7KNmiMPIj5xHMFfnkAS6xVGrcHleontt7+mBw8y7952e9c/Bg26TiOVqTwTrd2CV0n0jzOXL/ugZ3m47Cfly66X+v/+rnPWVnarr+ebXF8Of989kMZ6Co8+iNSkNsi5Narsdxcgf/cMkntNxr31JtT0w5s4nuJzLxE/dL91WDgHQYBm86w7fCRoGGEa6kgfeSBqPXDVL6+VPM/UpOm74HL83SeRPPloXL4PU5NCalI4ukgefgCpA6dQfustuk6/iOT0adRceBau2Lf2o4tW4sqGq74XhT++wawsf3DF5e0rOp5mil1TYzTrTO0+p5Ga2y877sY3Z/xhfnrxKq/mkguiMNeOeH6FLEWxo4ZSfuQp3MIl1Hzj25Tfep3S/Hfxp+2N2WFnym0rKD//EkbqKi8fhqgJsNN2wy1bQXnGAxD3iR1wEK4UYIYPRkYNxU7fBwY2V8BCsVsNp3DXDMrzF9J4729w/WuRVBIzcABqDWZwC6a+juz3ryQ2ZgQmFid3693EjjoIGTG6EvgtXII/eXe8SRPI/PI21PMRNZV38XzCXDupb5/v0u0ZO/++O96569RTf60RZlrVej6ykXw8mMuffSs8MCFvNMyad1q/W37m8k+8KK5tuYgfAy+OyxVxnV0ETz6PNNWj7T2Es16Efo2I7xHMeAIJXYXg4zHC5atwK7sxtbW4JW1IT5ZwZSdaKKCZLG5FO5JKVsTyd94H5xAvRlQO0M4eyrP+jjjFZUO0t49o2Src6l6kWK54p44uio89hxiPaP57hO8uxrSOJHrzHaLX3oBcDhJJJJmg/OBjiLUVnitkMWO3ZcBNV0QdR55p5xUWnfD92bPfHa+Y+9ZLWGRjB1imWQmfisw1e5x00YXlS88J27ff3zNevGL6+XxlkFgMLeQqa1oECtUNm4l4xd0qEJTRMECSKbRQRHwP/Biaz1XoMR5DS4WqISuSSK49o0qhgIogyQQu34uxlX/TsFwZs1QCzwPfh6gafnpexc1HUeU58XiFb8rlDeYmKFG5wIDXnwjj19zpPXf7lb/Z3+q5G9tILps6ivDFey+z3/riVf+YdOudE3sb01H3MSdZr7YFVa1kvbrm5KpbF4xVd0l8JKiMXBW09e5jvT8rH713/edZu944a55XZYnqiZ51evp6QeOH56aKWEvQt4LG/7kjaiyrfe3Uk976+YXTJ9/7i/vKbOTw7yYPsxjB3dA6eMw+y91Lo5//S33Xsy9q9nuXGq+u9T/yfNgWZRTVwyw1l1/m+h28H4t2n557sn+4+/ntq97c1GEWs6nthn9U7NeWt7031+SOX3bwifQ79jBNXXShhpnllaXy/yU4y0l+/XxtOvkYXX7QCWYumROq4NhNSWybPL51H+gs8L4g5ff2Lebfr7/vb0c333KVC2xcSk8/ITZZ9/lJhP9SZATxPMK+CjjN3znPde15pP1n+7vnHCf5e2Yp3sjNNB/42JS9ciRTwkei2NkTB46/qd+zD7juPz1C9pLLjE32r/DDf8JZ1Y1+fgORIyqspubyS13jScfRPeUY8/Kyed883Jau1ch97OHeLdI01h7qjRKnbVc3/PYhj90tfW1tUc8J51kJFVNX+x/HS+J7uEwWZxwNv78uqhs9yi6ffqK+2b3orMNs8bYtAWeTHLQRFEONnHeEKdzxWmbloYv2OLSnoa9oB8z+a2gmbE2YWYUYsy4t+TdbjRhTmdO4kQx47a9hg8Mu2u3gzKvdS444zBS2GJzNctCHr8vBzVK8Q6X47o41TQ979929+8CiPzh940+dS9ZoadYLIuUiZk0so//LBGUqwGg2QxSUSX/rfNf/lz9W/xe32Xcu/e7sF9KJw0+JOp+b5dQbyZbrdp9IjJsGoSr2rOyS+Yec/eW9X/7tL67rnHqcad5rFzPgnw+H9sCpGmY70VzfOosS+ZcSMNYi1qK5LGG2E2+/vXTAizPC5n33Nt37HW9eufnnN1xy9gl7nZNbNu/jui58ag7aaJxUbW7yQJg4cDTxq0Ydd+IE/9tnk1vVXmlu8vTzleYmsVok/nk3NzEVIy0HuFIfiuDvs4fWXXx2lG5t9cKrb2HBPXfNX0ThW0d5xZkSOtzHNDf5XAFaT4gzIkSccmrib3f+/uutdthFI886aaA55WhyuWyUv3sGxYefNK5zuQgWY1OQWNMeh3WtcTYFmsjaFjnCmvY4pWp7nAjTOFATX9jfpb58JOn6Out+/xBLbvr9yqXh4utOPuyQX66otsfZ0mZLnzdAQOWc6/EQqRW+l2xpPiS78pwmM/zsoUcfOjR90lEUh7RQfHtBWHjsGSk9/7Jxi5cJFKoD+5UGS8ZW1UtZpylGDlxE5QR8WJVQEsjwoWsbLMXHjfESbe3k73qItvsfWdoeLb79JVpu+LZtb/8EDZb+tQBtYE3VFl3H1Y2sP7170bEDqDu5YdT2ew457EAvvu8eBIMHUMrmKL+/JCrPX0i4YHGlRVdXL+TyUtGSwFiLpJMqjfXY1hb1qi26YlsNs4maGvwVqyk99SLL/vx4lFk454Uuen83g6b7rrPdGSKtJNwf3UXwbwVog0RXqNaFRbg10m1GwPR66vZP1w+fXDNh7MCGidsRH7sV0tqC1tXg4jHUmopgJiBOEecwpTLSm0WXr6L0ziJ6Zr9Bbt7bK/I9i1/rI/P4EnjiVCvzP2uTt/81gNYHaoM2gdWzZ2dH2n9/GN8AE5PYHeLUbOVRO9hLpJtsKpUU38YBNIjKYb5QiIrZroC+5QHZBSWiOavh9X/CnF9Y6fo82wRu7vp/bIOu0ce4WrwAAAAASUVORK5CYII=" alt="Royal Kings"/>
+      <span class="nav-brand">ROYAL REWARDS</span>
+    </div>
+    <div class="nav-right">
+      <a class="nav-link-btn" href="index.html" style="display:none;">&#8592; Site</a>
+      <div class="nav-pts-badge">&#128081; <span id="nav-pts">0</span> pts</div>
+      <div class="nav-user-btn"><div class="nav-avatar" id="nav-avatar">U</div><span id="nav-name">User</span></div>
+      <button class="nav-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="dash">
+    <div class="page-title" id="user-greeting">Welcome back &#128081;</div>
+    <div class="page-sub">Track your points, transfers and Royal Rewards.</div>
+
+    <!-- TIER HERO -->
+    <div class="tier-hero t-bronze" id="tier-card">
+      <div class="tier-glow"></div>
+      <div class="tier-label">Current Tier</div>
+      <div class="tier-name" id="tier-name">&#129310; Bronze</div>
+      <div class="tier-pts" id="tier-pts-lbl">0 points earned</div>
+      <div class="tier-bar-wrap"><div class="tier-bar" id="tier-bar" style="width:0%"></div></div>
+      <div class="tier-next" id="tier-next">0 pts to Silver</div>
+      <div class="tier-perks" id="tier-perks"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-icon">&#128176;</div><div class="stat-label">Transferred</div><div class="stat-value" id="s-transferred">SGD 0</div><div class="stat-sub" id="s-tx-count">0 transfers</div></div>
+      <div class="stat-card"><div class="stat-icon">&#11088;</div><div class="stat-label">Points Balance</div><div class="stat-value" id="s-points" style="color:var(--red);">0</div><div class="stat-sub">Royal Rewards Points</div></div>
+      <div class="stat-card"><div class="stat-icon">&#128101;</div><div class="stat-label">Referrals</div><div class="stat-value" id="s-refs">0</div><div class="stat-sub" id="s-ref-pts">+0 bonus pts</div></div>
+      <div class="stat-card"><div class="stat-icon">&#128293;</div><div class="stat-label">Multiplier</div><div class="stat-value" id="s-multi" style="color:var(--red);">1.0x</div><div class="stat-sub">Points per transfer</div></div>
+    </div>
+
+    <!-- TRANSFER HISTORY -->
+    <div class="sec-card">
+      <div class="sec-head"><span class="sec-title">&#128202; Transfer History &amp; Points</span><span style="font-size:12px;color:var(--txtm);" id="tx-count-lbl">0 transfers</span></div>
+      <div id="tx-table-wrap"><div class="empty"><div style="font-size:28px;margin-bottom:8px;">&#128184;</div>No transfers yet. Make your first transfer via SingX to earn points!</div></div>
+    </div>
+
+    <!-- REDEEM -->
+    <div class="sec-card">
+      <div class="sec-head"><span class="sec-title">&#127873; Redeem Points</span><span class="badge b-completed" id="redeem-pts-badge">0 pts available</span></div>
+      <div class="sec-body"><div class="redeem-grid" id="redeem-grid"></div></div>
+    </div>
+
+    <!-- HOW TO EARN -->
+    <div class="sec-card">
+      <div class="sec-head"><span class="sec-title">&#9889; How to Earn Points</span></div>
+      <div class="sec-body">
+        <div class="earn-grid">
+          <div class="earn-card"><div class="earn-icon">&#128184;</div><div class="earn-pts">1 pt / SGD 10</div><div class="earn-desc">Base rate on every transfer</div></div>
+          <div class="earn-card"><div class="earn-icon">&#127881;</div><div class="earn-pts">50 pts</div><div class="earn-desc">Welcome bonus — first transfer</div></div>
+          <div class="earn-card"><div class="earn-icon">&#128101;</div><div class="earn-pts">100 pts</div><div class="earn-desc">Per referral (their first transfer)</div></div>
+          <div class="earn-card"><div class="earn-icon">&#127941;</div><div class="earn-pts">200 pts</div><div class="earn-desc">Every 10th transfer milestone</div></div>
+          <div class="earn-card"><div class="earn-icon">&#129351;</div><div class="earn-pts">1x – 3x</div><div class="earn-desc">Tier multiplier on all points</div></div>
+          <div class="earn-card"><div class="earn-icon">&#9989;</div><div class="earn-pts">25,000 pts</div><div class="earn-desc">One-way flight to India &#9992;</div></div>
+        </div>
+        <div class="divider"></div>
+        <p style="font-size:13px;color:var(--txt2);"><strong>Tier multipliers:</strong> &#129310; Bronze 1.0x &nbsp;|&nbsp; &#129544; Silver 1.5x &nbsp;|&nbsp; &#127941; Gold 2.0x &nbsp;|&nbsp; &#128142; Platinum 3.0x on all points earned.</p>
+      </div>
+    </div>
+
+    <!-- REFERRAL LINK -->
+    <div class="sec-card">
+      <div class="sec-head"><span class="sec-title">&#128279; Your Referral Link</span></div>
+      <div class="sec-body">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:12px;">Earn <strong>100 bonus points</strong> every time a friend makes their first transfer via your link.</p>
+        <div class="key-box"><span class="key-val" id="user-ref-link">singx.co?ref=ROYALKINGS&amp;rid=...</span><button class="btn-sm" onclick="copyText(document.getElementById('user-ref-link').textContent,this)">Copy</button></div>
+      </div>
+    </div>
+
+    <!-- API KEY -->
+    <div class="sec-card">
+      <div class="sec-head"><span class="sec-title">&#128273; Your API Key</span></div>
+      <div class="sec-body">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:12px;">Use this key to post transfer data to the Royal Rewards API and auto-credit points in real time.</p>
+        <div class="key-box"><span class="key-val" id="user-api-key">rk_live_••••••••••••••••••••</span><button class="btn-sm" onclick="revealKey()">Reveal</button><button class="btn-sm" onclick="copyText(document.getElementById('user-api-key').dataset.key||'hidden',this)">Copy</button></div>
+        <p style="font-size:11px;color:var(--txtm);margin-top:7px;">Keep this secret. Contact support to regenerate if compromised.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ ADMIN DASHBOARD ════ -->
+<div class="screen" id="screen-admin">
+  <nav class="app-nav">
+    <div class="nav-left">
+      <img class="nav-logo" src="data:image/png;base64,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" alt="Royal Kings"/>
+      <span class="nav-brand">ADMIN PANEL</span>
+    </div>
+    <div class="nav-right">
+      <button class="nav-btn" onclick="showScreen('screen-user')">&#128100; User View</button>
+      <a class="nav-link-btn" href="index.html" style="display:none;">&#8592; Site</a>
+      <button class="nav-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="dash">
+    <div class="page-title">&#128202; Royal Rewards — Admin Panel</div>
+    <div class="page-sub">Manage members, post transfers, configure rewards, view API docs.</div>
+
+    <!-- ADMIN STATS -->
+    <div class="stats-row" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+      <div class="stat-card"><div class="stat-icon">&#128101;</div><div class="stat-label">Total Members</div><div class="stat-value" id="a-users">0</div></div>
+      <div class="stat-card"><div class="stat-icon">&#128176;</div><div class="stat-label">Total Volume</div><div class="stat-value" id="a-vol">SGD 0</div></div>
+      <div class="stat-card"><div class="stat-icon">&#11088;</div><div class="stat-label">Points Issued</div><div class="stat-value" id="a-pts">0</div></div>
+      <div class="stat-card"><div class="stat-icon">&#128202;</div><div class="stat-label">Transfers</div><div class="stat-value" id="a-tx">0</div></div>
+      <div class="stat-card"><div class="stat-icon">&#9992;&#65039;</div><div class="stat-label">Flight Redemptions</div><div class="stat-value" id="a-flights">0</div></div>
+    </div>
+
+    <!-- ADMIN TABS -->
+    <div class="admin-tabs">
+      <button class="adm-tab active" onclick="switchAdmTab('adm-transfer')">&#9889; Post Transfer</button>
+      <button class="adm-tab" onclick="switchAdmTab('adm-members')">&#128101; Members</button>
+      <button class="adm-tab" onclick="switchAdmTab('adm-transfers')">&#128202; All Transfers</button>
+      <button class="adm-tab" onclick="switchAdmTab('adm-redeem')">&#127873; Redemptions</button>
+      <button class="adm-tab" onclick="switchAdmTab('adm-api')">&#128196; API Docs</button>
+    </div>
+
+    <!-- POST TRANSFER -->
+    <div class="adm-panel active" id="adm-transfer">
+      <div class="sec-card">
+        <div class="sec-head"><span class="sec-title">&#9889; Post Transfer (API Simulator)</span></div>
+        <div class="sec-body">
+          <p style="font-size:13px;color:var(--txt2);margin-bottom:16px;">Simulates an incoming SingX webhook. In production, SingX posts this automatically via your API key.</p>
+          <div id="post-ok" class="success-bar hidden"></div>
+          <div class="form-grid">
+            <div class="fg"><label class="fl">Member Email</label><select class="fs" id="tx-email" onchange="previewPts()"></select></div>
+            <div class="fg"><label class="fl">Transfer ID</label><input class="fi" type="text" id="tx-id" placeholder="TX-2025-001"/><button class="btn-sm" onclick="genTxId()" style="margin-top:5px;width:fit-content;">&#128260; Auto-generate</button></div>
+            <div class="fg"><label class="fl">Amount (SGD)</label><input class="fi" type="number" id="tx-amt" placeholder="500.00" min="1" oninput="previewPts()"/></div>
+            <div class="fg"><label class="fl">Destination Currency</label>
+              <select class="fs" id="tx-cur">
+                <option value="INR">&#127470;&#127475; INR — Indian Rupee</option>
+                <option value="PHP">&#127477;&#127469; PHP — Philippine Peso</option>
+                <option value="BDT">&#127463;&#127465; BDT — Bangladeshi Taka</option>
+                <option value="MYR">&#127474;&#127486; MYR — Malaysian Ringgit</option>
+                <option value="PKR">&#127477;&#127472; PKR — Pakistani Rupee</option>
+                <option value="LKR">&#127473;&#127472; LKR — Sri Lankan Rupee</option>
+                <option value="IDR">&#127470;&#127465; IDR — Indonesian Rupiah</option>
+                <option value="USD">&#127482;&#127480; USD — US Dollar</option>
+                <option value="AUD">&#127462;&#127482; AUD — Australian Dollar</option>
+                <option value="GBP">&#127468;&#127463; GBP — British Pound</option>
+              </select></div>
+            <div class="fg"><label class="fl">SingX Reference</label><input class="fi" type="text" id="tx-ref" placeholder="SINGX-REF-001"/></div>
+            <div class="fg"><label class="fl">Status</label><select class="fs" id="tx-status"><option value="completed">Completed</option><option value="pending">Pending</option></select></div>
+          </div>
+          <div class="pts-preview" id="pts-preview" style="display:none;">
+            <div class="pts-preview-title">&#9889; Points Preview</div>
+            <div id="pts-preview-body" style="font-size:14px;color:var(--txt1);"></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-red" onclick="postTransfer()">&#9889; Post Transfer &amp; Credit Points</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS TABLE -->
+    <div class="adm-panel" id="adm-members">
+      <div class="sec-card">
+        <div class="sec-head">
+          <span class="sec-title">All Members</span>
+          <input style="padding:7px 12px;border:1.5px solid var(--s3);border-radius:var(--r-md);font-size:13px;width:200px;" type="text" placeholder="Search..." oninput="filterMembers(this.value)"/>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="rk-table" id="members-table">
+            <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Tier</th><th>Points</th><th>Transferred</th><th>Transfers</th><th>API Key</th><th>Joined</th></tr></thead>
+            <tbody id="members-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL TRANSFERS -->
+    <div class="adm-panel" id="adm-transfers">
+      <div class="sec-card">
+        <div class="sec-head"><span class="sec-title">All Transfer Records</span></div>
+        <div style="overflow-x:auto;">
+          <table class="rk-table">
+            <thead><tr><th>TX ID</th><th>Member</th><th>Amount (SGD)</th><th>Currency</th><th>Points Earned</th><th>SingX Ref</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="all-tx-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REDEMPTIONS -->
+    <div class="adm-panel" id="adm-redeem">
+      <div class="sec-card">
+        <div class="sec-head"><span class="sec-title">Redemption Requests</span></div>
+        <div style="overflow-x:auto;">
+          <table class="rk-table">
+            <thead><tr><th>Member</th><th>Reward</th><th>Points Used</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody id="redeem-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- API DOCS -->
+    <div class="adm-panel" id="adm-api">
+      <div class="sec-card">
+        <div class="sec-head"><span class="sec-title">&#128196; API Documentation</span></div>
+        <div class="sec-body" style="max-width:780px;">
+          <p style="font-size:14px;color:var(--txt2);margin-bottom:20px;">The Royal Rewards API lets SingX automatically post transfer data and credit points to members in real time. Each member has a unique API key.</p>
+
+          <div style="margin-bottom:22px;">
+            <div class="ep-badge ep-post">POST</div>
+            <div style="font-family:monospace;font-size:14px;margin-bottom:5px;">/api/v1/transfer</div>
+            <div style="font-size:13px;color:var(--txt2);margin-bottom:8px;">Records a completed transfer and credits Royal Rewards points.</div>
+            <div class="code-block"><span class="cc">// Headers</span>
+<span class="ck">Authorization</span>: Bearer <span class="cs">rk_live_YOUR_API_KEY</span>
+<span class="ck">Content-Type</span>: <span class="cs">application/json</span>
+
+<span class="cc">// Request Body</span>
+{
+  <span class="ck">"transfer_id"</span>:          <span class="cs">"TX-2025-001"</span>,
+  <span class="ck">"user_email"</span>:           <span class="cs">"member@email.com"</span>,
+  <span class="ck">"amount_sgd"</span>:           <span class="cn">500.00</span>,
+  <span class="ck">"destination_currency"</span>: <span class="cs">"INR"</span>,
+  <span class="ck">"singx_reference"</span>:      <span class="cs">"SINGX-REF-20250115"</span>,
+  <span class="ck">"status"</span>:               <span class="cs">"completed"</span>,
+  <span class="ck">"timestamp"</span>:            <span class="cs">"2025-01-15T10:30:00Z"</span>
+}</div>
+            <div style="font-size:11px;font-weight:700;color:var(--txtm);text-transform:uppercase;letter-spacing:.5px;margin:8px 0 4px;">Response 200</div>
+            <div class="code-block">{
+  <span class="ck">"success"</span>:         <span class="cn">true</span>,
+  <span class="ck">"points_earned"</span>:   <span class="cn">75</span>,
+  <span class="ck">"total_points"</span>:    <span class="cn">350</span>,
+  <span class="ck">"tier"</span>:            <span class="cs">"Silver"</span>,
+  <span class="ck">"multiplier"</span>:      <span class="cn">1.5</span>,
+  <span class="ck">"message"</span>:         <span class="cs">"75 Royal Rewards points credited."</span>
+}</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="margin-bottom:22px;">
+            <div class="ep-badge ep-get">GET</div>
+            <div style="font-family:monospace;font-size:14px;margin-bottom:5px;">/api/v1/member/:email</div>
+            <div class="code-block">{
+  <span class="ck">"email"</span>:         <span class="cs">"member@email.com"</span>,
+  <span class="ck">"total_points"</span>:  <span class="cn">350</span>,
+  <span class="ck">"tier"</span>:           <span class="cs">"Silver"</span>,
+  <span class="ck">"multiplier"</span>:     <span class="cn">1.5</span>,
+  <span class="ck">"transfers"</span>:      <span class="cn">7</span>,
+  <span class="ck">"total_sgd"</span>:      <span class="cn">2400.00</span>
+}</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.18);border-radius:var(--r-md);padding:15px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:8px;">&#9889; Points Formula</div>
+            <div class="code-block"><span class="cc">// 1 point per SGD 10 × tier multiplier</span>
+base   = Math.floor(<span class="ck">amount_sgd</span> / <span class="cn">10</span>)
+earned = Math.round(base × <span class="ck">multiplier</span>)
+
+<span class="cc">// One-time bonuses</span>
++<span class="cn">50</span>  first transfer welcome bonus
++<span class="cn">200</span> every 10th transfer milestone
+
+<span class="cc">// Tier thresholds & multipliers</span>
+Bronze   <span class="cn">0</span>–<span class="cn">499</span>  pts  →  <span class="cn">1.0x</span>
+Silver   <span class="cn">500</span>–<span class="cn">1999</span> pts →  <span class="cn">1.5x</span>
+Gold     <span class="cn">2000</span>–<span class="cn">4999</span> →  <span class="cn">2.0x</span>
+Platinum <span class="cn">5000+</span>       →  <span class="cn">3.0x</span>
+
+<span class="cc">// Top reward</span>
+<span class="cn">25000</span> pts → One-way flight ticket to India &#9992;</div>
+          </div>
+
+          <div class="divider"></div>
+          <div style="background:rgba(66,133,244,.07);border:1px solid rgba(66,133,244,.18);border-radius:var(--r-md);padding:15px;">
+            <div style="font-size:13px;font-weight:700;color:#1a73e8;margin-bottom:8px;">&#128293; Firebase Real-Time Setup</div>
+            <div style="font-size:13px;color:var(--txt2);line-height:1.7;">
+              To upgrade from localStorage to real-time Firebase:<br/>
+              1. Create project at <strong>console.firebase.google.com</strong><br/>
+              2. Enable <strong>Firestore Database</strong> (test mode)<br/>
+              3. Replace the <code style="background:var(--s2);padding:1px 5px;border-radius:3px;">FIREBASE_CONFIG</code> object at the top of this file with your project's config<br/>
+              4. Set <code style="background:var(--s2);padding:1px 5px;border-radius:3px;">USE_FIREBASE = true</code><br/>
+              5. All user IDs, points and transfers will sync in real time across all devices
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="pts-popup" id="pts-popup">
+  <div class="popup-pts" id="popup-pts">+50 pts</div>
+  <div class="popup-lbl" id="popup-lbl">Points credited!</div>
+</div>
+
+<!-- WA BUTTON -->
+<a href="https://wa.me/6500000000?text=Hi%20Royal%20Kings%20Group%2C%20I%20need%20help%20with%20my%20Royal%20Rewards%20account." target="_blank" rel="noopener" title="WhatsApp support" style="position:fixed;bottom:24px;right:24px;z-index:9998;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);text-decoration:none;">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+'use strict';
+
+// ══════════════════════════════════════════════════
+//  FIREBASE CONFIG — Replace with your project config
+//  Then set USE_FIREBASE = true to go live
+// ══════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey:            "YOUR_API_KEY",
+  authDomain:        "YOUR_PROJECT.firebaseapp.com",
+  projectId:         "YOUR_PROJECT_ID",
+  storageBucket:     "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId:             "YOUR_APP_ID"
+};
+const USE_FIREBASE = true; // ← set to true after adding your Firebase config above
+
+// ══════════════════════════════════════════════════
+//  DATA LAYER — auto-switches between Firebase & localStorage
+// ══════════════════════════════════════════════════
+let DB_MODE = 'local';
+let fireDb  = null;
+
+async function initDB() {
+  if (USE_FIREBASE && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
+    try {
+      // Dynamically load Firebase SDK
+      const { initializeApp }    = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+      const { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, query, orderBy }
+        = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      const app = initializeApp(FIREBASE_CONFIG);
+      fireDb = getFirestore(app);
+      DB_MODE = 'firebase';
+      window._firestoreOps = { collection, doc, getDoc, getDocs, setDoc, updateDoc, query, orderBy };
+      document.querySelectorAll('.db-local').forEach(el => {
+        el.className = 'db-firebase';
+        el.textContent = '🔥 Connected to Firebase — real-time sync active';
+      });
+      await seedFirebase();
+      return;
+    } catch(e) {
+      console.warn('Firebase init failed, falling back to localStorage:', e);
+    }
+  }
+  DB_MODE = 'local';
+  seedLocal();
+}
+
+// ── LOCAL STORAGE ADAPTER ────────────────────────
+const LOCAL = {
+  users:     () => { try{ return JSON.parse(localStorage.getItem('rk_users')||'[]'); }catch(e){ return []; }},
+  saveUsers: u => localStorage.setItem('rk_users', JSON.stringify(u)),
+  txs:       () => { try{ return JSON.parse(localStorage.getItem('rk_txs')||'[]'); }catch(e){ return []; }},
+  saveTxs:   t => localStorage.setItem('rk_txs', JSON.stringify(t)),
+  redemptions:     () => { try{ return JSON.parse(localStorage.getItem('rk_redemptions')||'[]'); }catch(e){ return []; }},
+  saveRedemptions: r => localStorage.setItem('rk_redemptions', JSON.stringify(r)),
+  session:     () => { try{ return JSON.parse(localStorage.getItem('rk_session')||'null'); }catch(e){ return null; }},
+  saveSession: s => localStorage.setItem('rk_session', JSON.stringify(s)),
+  clearSession:() => localStorage.removeItem('rk_session'),
+};
+
+function seedLocal() {
+  if (LOCAL.users().length > 0) return;
+  const users = [
+    {id:'admin@rk.com',email:'admin@rk.com',firstName:'Admin',lastName:'Royal',phone:'+65 9000 0000',password:'admin123',role:'admin',points:0,totalSGD:0,txCount:0,refCode:'RK-ADMIN01',apiKey:'rk_live_admin_demo_key_001',joined:new Date(Date.now()-90*86400000).toISOString()},
+    {id:'user@rk.com',email:'user@rk.com',firstName:'Arjun',lastName:'Sharma',phone:'+65 9123 4567',password:'password123',role:'user',points:850,totalSGD:5200,txCount:12,refCode:'RK-ARJUNS',apiKey:genApiKey('user@rk.com'),joined:new Date(Date.now()-60*86400000).toISOString()},
+    {id:'priya@rk.com',email:'priya@rk.com',firstName:'Priya',lastName:'Patel',phone:'+65 8765 4321',password:'pass123',role:'user',points:2400,totalSGD:18500,txCount:34,refCode:'RK-PRIYAP',apiKey:genApiKey('priya@rk.com'),joined:new Date(Date.now()-120*86400000).toISOString()},
+    {id:'fariz@rk.com',email:'fariz@rk.com',firstName:'Fariz',lastName:'Rahman',phone:'+65 9876 5432',password:'pass123',role:'user',points:320,totalSGD:3100,txCount:8,refCode:'RK-FARIZR',apiKey:genApiKey('fariz@rk.com'),joined:new Date(Date.now()-30*86400000).toISOString()},
+  ];
+  const txs = [
+    {id:'TX-D001',userId:'user@rk.com',amtSGD:500,currency:'INR',ref:'SINGX-001',status:'completed',ptsEarned:75,date:new Date(Date.now()-5*86400000).toISOString()},
+    {id:'TX-D002',userId:'user@rk.com',amtSGD:300,currency:'BDT',ref:'SINGX-002',status:'completed',ptsEarned:45,date:new Date(Date.now()-10*86400000).toISOString()},
+    {id:'TX-D003',userId:'user@rk.com',amtSGD:1000,currency:'PHP',ref:'SINGX-003',status:'completed',ptsEarned:150,date:new Date(Date.now()-15*86400000).toISOString()},
+    {id:'TX-D004',userId:'priya@rk.com',amtSGD:2000,currency:'INR',ref:'SINGX-004',status:'completed',ptsEarned:400,date:new Date(Date.now()-3*86400000).toISOString()},
+    {id:'TX-D005',userId:'priya@rk.com',amtSGD:1500,currency:'MYR',ref:'SINGX-005',status:'completed',ptsEarned:300,date:new Date(Date.now()-8*86400000).toISOString()},
+    {id:'TX-D006',userId:'fariz@rk.com',amtSGD:400,currency:'IDR',ref:'SINGX-006',status:'completed',ptsEarned:40,date:new Date(Date.now()-2*86400000).toISOString()},
+  ];
+  LOCAL.saveUsers(users);
+  LOCAL.saveTxs(txs);
+}
+
+async function seedFirebase() {
+  const {collection,getDocs,setDoc,doc} = window._firestoreOps;
+  const snap = await getDocs(collection(fireDb,'users'));
+  if (snap.size > 0) return;
+  const demoUsers = [
+    {email:'admin@rk.com',firstName:'Admin',lastName:'Royal',phone:'+65 9000 0000',password:'admin123',role:'admin',points:0,totalSGD:0,txCount:0,refCode:'RK-ADMIN01',apiKey:'rk_live_admin_demo_key_001',joined:new Date().toISOString()},
+    {email:'user@rk.com',firstName:'Arjun',lastName:'Sharma',phone:'+65 9123 4567',password:'password123',role:'user',points:850,totalSGD:5200,txCount:12,refCode:'RK-ARJUNS',apiKey:genApiKey('user@rk.com'),joined:new Date().toISOString()},
+  ];
+  for (const u of demoUsers) await setDoc(doc(fireDb,'users',u.email), u);
+}
+
+// ── UNIFIED DB API ────────────────────────────────
+async function dbGetUsers() {
+  if (DB_MODE === 'firebase') {
+    const {collection,getDocs,query,orderBy} = window._firestoreOps;
+    const snap = await getDocs(query(collection(fireDb,'users'),orderBy('joined','desc')));
+    return snap.docs.map(d=>d.data());
+  }
+  return LOCAL.users();
+}
+async function dbSaveUser(user) {
+  if (DB_MODE === 'firebase') {
+    const {doc,setDoc} = window._firestoreOps;
+    await setDoc(doc(fireDb,'users',user.email), user);
+  } else {
+    const users = LOCAL.users();
+    const idx = users.findIndex(u=>u.email===user.email);
+    if(idx>=0) users[idx]=user; else users.push(user);
+    LOCAL.saveUsers(users);
+  }
+}
+async function dbGetTxs(userEmail) {
+  if (DB_MODE === 'firebase') {
+    const {collection,getDocs,query,orderBy} = window._firestoreOps;
+    const snap = await getDocs(query(collection(fireDb,'transfers'),orderBy('date','desc')));
+    const all = snap.docs.map(d=>d.data());
+    return userEmail ? all.filter(t=>t.userId===userEmail) : all;
+  }
+  const all = LOCAL.txs();
+  return userEmail ? all.filter(t=>t.userId===userEmail) : all;
+}
+async function dbSaveTx(tx) {
+  if (DB_MODE === 'firebase') {
+    const {doc,setDoc} = window._firestoreOps;
+    await setDoc(doc(fireDb,'transfers',tx.id), tx);
+  } else {
+    const txs = LOCAL.txs();
+    txs.push(tx);
+    LOCAL.saveTxs(txs);
+  }
+}
+async function dbGetRedemptions(userEmail) {
+  if (DB_MODE === 'firebase') {
+    const {collection,getDocs,query,orderBy} = window._firestoreOps;
+    const snap = await getDocs(query(collection(fireDb,'redemptions'),orderBy('date','desc')));
+    const all = snap.docs.map(d=>d.data());
+    return userEmail ? all.filter(r=>r.userId===userEmail) : all;
+  }
+  const all = LOCAL.redemptions();
+  return userEmail ? all.filter(r=>r.userId===userEmail) : all;
+}
+async function dbSaveRedemption(r) {
+  if (DB_MODE === 'firebase') {
+    const {doc,setDoc} = window._firestoreOps;
+    await setDoc(doc(fireDb,'redemptions',r.id), r);
+  } else {
+    const items = LOCAL.redemptions();
+    items.push(r);
+    LOCAL.saveRedemptions(items);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════
+const TIERS = [
+  {name:'Bronze',  min:0,    max:499,   multi:1.0, cls:'t-bronze', icon:'🥉'},
+  {name:'Silver',  min:500,  max:1999,  multi:1.5, cls:'t-silver', icon:'🥈'},
+  {name:'Gold',    min:2000, max:4999,  multi:2.0, cls:'t-gold',   icon:'🏅'},
+  {name:'Platinum',min:5000, max:99999, multi:3.0, cls:'t-platinum',icon:'💎'},
+];
+
+const REWARDS = [
+  {id:'fee_waiver', title:'Fee Waiver',      icon:'💸', pts:300,   desc:'1 free transfer fee waived'},
+  {id:'cashback5',  title:'$5 Cashback',     icon:'💰', pts:500,   desc:'Credited to next transfer'},
+  {id:'rate_lock',  title:'Rate Lock 24h',   icon:'🔒', pts:800,   desc:'Lock rate for 24 hours'},
+  {id:'vip',        title:'VIP Support',     icon:'👑', pts:1000,  desc:'Priority customer service'},
+  {id:'double_pts', title:'2× Points 7 Days',icon:'⚡', pts:1500,  desc:'Double points for a week'},
+  {id:'cashback20', title:'$20 Gift Card',   icon:'🎁', pts:2000,  desc:'Royal Kings voucher'},
+  {id:'flight_india',title:'Flight to India',icon:'✈️', pts:25000, desc:'One-way ticket SIN→India', featured:true},
+];
+
+const CFLAGS={INR:'🇮🇳',PHP:'🇵🇭',BDT:'🇧🇩',MYR:'🇲🇾',PKR:'🇵🇰',LKR:'🇱🇰',IDR:'🇮🇩',USD:'🇺🇸',AUD:'🇦🇺',GBP:'🇬🇧'};
+
+function getTier(pts){ return TIERS.find(t=>pts>=t.min&&pts<=t.max)||TIERS[0]; }
+function calcPts(amt,currentPts,txCount){
+  const tier=getTier(currentPts);
+  const base=Math.floor(amt/10);
+  let pts=Math.round(base*tier.multi);
+  let bonus='';
+  if(txCount===0){pts+=50;bonus+=' +50 welcome';}
+  if((txCount+1)%10===0){pts+=200;bonus+=' +200 milestone';}
+  return{pts,base,multi:tier.multi,bonus,tier:tier.name};
+}
+function genApiKey(email){ return 'rk_live_'+btoa(email+'_rk2025').replace(/[^a-zA-Z0-9]/g,'').substring(0,24); }
+function genRefCode(name){ return 'RK-'+name.replace(/\s+/g,'').toUpperCase().substring(0,5)+Math.floor(Math.random()*900+100); }
+function genTxId(){ const id='TX-'+Date.now().toString(36).toUpperCase(); if(document.getElementById('tx-id')) document.getElementById('tx-id').value=id; return id; }
+function copyText(text,btn){ navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent='✓';setTimeout(()=>btn.textContent=o,1800);}); }
+function showPopup(pts,lbl){ const p=document.getElementById('pts-popup');document.getElementById('popup-pts').textContent=pts;document.getElementById('popup-lbl').textContent=lbl;p.classList.add('show');setTimeout(()=>p.classList.remove('show'),3500); }
+
+// ══════════════════════════════════════════════════
+//  SCREEN MANAGER
+// ══════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  // Show back-to-site links
+  document.querySelectorAll('.nav-link-btn').forEach(l=>l.style.display='inline-flex');
+}
+
+// ══════════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════════
+function switchTab(tab){
+  document.getElementById('tab-btn-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-btn-reg').classList.toggle('active',tab==='register');
+  document.getElementById('tab-login').classList.toggle('hidden',tab!=='login');
+  document.getElementById('tab-register').classList.toggle('hidden',tab!=='register');
+}
+function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.classList.remove('hidden');}
+function hideErr(id){document.getElementById(id).classList.add('hidden');}
+
+async function doLogin(){
+  hideErr('login-error');
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pw').value;
+  if(!email||!pass){showErr('login-error','Please enter email and password.');return;}
+  const users=await dbGetUsers();
+  const user=users.find(u=>u.email===email&&u.password===pass);
+  if(!user){showErr('login-error','Invalid email or password.');return;}
+  LOCAL.saveSession(user);
+  if(user.role==='admin'){await renderAdmin();showScreen('screen-admin');}
+  else{await renderUser(user);showScreen('screen-user');}
+}
+
+async function doRegister(){
+  hideErr('reg-error');
+  const fname=document.getElementById('reg-fname').value.trim();
+  const lname=document.getElementById('reg-lname').value.trim();
+  const email=document.getElementById('reg-email').value.trim().toLowerCase();
+  const phone=document.getElementById('reg-phone').value.trim();
+  const pass=document.getElementById('reg-pw').value;
+  const ref=document.getElementById('reg-ref').value.trim();
+  if(!fname||!email||!pass){showErr('reg-error','Please fill in required fields.');return;}
+  if(pass.length<6){showErr('reg-error','Password must be at least 6 characters.');return;}
+  const users=await dbGetUsers();
+  if(users.find(u=>u.email===email)){showErr('reg-error','Account with this email already exists.');return;}
+  const newUser={id:email,email,firstName:fname,lastName:lname,phone,password:pass,role:'user',
+    points:0,totalSGD:0,txCount:0,refCode:genRefCode(fname+lname),apiKey:genApiKey(email),
+    refBy:ref||null,joined:new Date().toISOString()};
+  if(ref){
+    const refUser=users.find(u=>u.refCode===ref);
+    if(refUser){refUser.points=(refUser.points||0)+100;await dbSaveUser(refUser);}
+  }
+  await dbSaveUser(newUser);
+  LOCAL.saveSession(newUser);
+  await renderUser(newUser);
+  showScreen('screen-user');
+  showPopup('+50 pts','Welcome! Make your first transfer to claim your bonus.');
+}
+
+function doLogout(){LOCAL.clearSession();window.location.href='index.html';}
+
+// ══════════════════════════════════════════════════
+//  USER RENDER
+// ══════════════════════════════════════════════════
+async function renderUser(user){
+  const tier=getTier(user.points||0);
+  const txs=await dbGetTxs(user.email);
+  const allUsers=await dbGetUsers();
+
+  // Nav
+  document.getElementById('nav-pts').textContent=(user.points||0).toLocaleString();
+  document.getElementById('nav-name').textContent=user.firstName;
+  document.getElementById('nav-avatar').textContent=((user.firstName||'U')[0]+(user.lastName||'')[0]||'').toUpperCase();
+  document.getElementById('user-greeting').textContent='Welcome back, '+user.firstName+' 👑';
+
+  // Tier hero
+  const tc=document.getElementById('tier-card');
+  tc.className='tier-hero '+tier.cls;
+  document.getElementById('tier-name').textContent=tier.icon+' '+tier.name;
+  document.getElementById('tier-pts-lbl').textContent=(user.points||0).toLocaleString()+' points earned';
+  const next=TIERS.find(t=>t.min>(user.points||0));
+  const pct=next?Math.min(100,Math.round(((user.points||0)-tier.min)/(next.min-tier.min)*100)):100;
+  document.getElementById('tier-bar').style.width=pct+'%';
+  document.getElementById('tier-next').textContent=next?(next.min-(user.points||0)).toLocaleString()+' pts to '+next.name:'Maximum tier reached! 💎';
+  const perksMap={Bronze:['Points on every transfer','Balance inquiry'],Silver:['1.5× multiplier','Priority support'],Gold:['2× multiplier','Free monthly transfer','Rate alerts'],Platinum:['3× multiplier','Dedicated manager','Zero fees']};
+  document.getElementById('tier-perks').innerHTML=(perksMap[tier.name]||[]).map(p=>'<span class="tier-perk">&#10003; '+p+'</span>').join('');
+
+  // Stats
+  document.getElementById('s-transferred').textContent='SGD '+(user.totalSGD||0).toLocaleString();
+  document.getElementById('s-tx-count').textContent=(user.txCount||0)+' transfers';
+  document.getElementById('s-points').textContent=(user.points||0).toLocaleString();
+  const refs=allUsers.filter(u=>u.refBy===user.refCode).length;
+  document.getElementById('s-refs').textContent=refs;
+  document.getElementById('s-ref-pts').textContent='+'+(refs*100)+' bonus pts';
+  document.getElementById('s-multi').textContent=tier.multi+'×';
+
+  // Transfer table
+  document.getElementById('tx-count-lbl').textContent=txs.length+' transfers';
+  const tw=document.getElementById('tx-table-wrap');
+  if(txs.length===0){tw.innerHTML='<div class="empty"><div style="font-size:28px;margin-bottom:8px;">💳</div>No transfers yet.</div>';}
+  else{
+    tw.innerHTML='<div style="overflow-x:auto"><table class="rk-table"><thead><tr><th>TX ID</th><th>Amount</th><th>Currency</th><th>Points Earned</th><th>Status</th><th>Date</th></tr></thead><tbody>'+
+      txs.slice().reverse().map(t=>`<tr>
+        <td><code style="font-size:11px;">${t.id}</code></td>
+        <td>SGD ${parseFloat(t.amtSGD).toLocaleString('en-SG',{minimumFractionDigits:2})}</td>
+        <td>${CFLAGS[t.currency]||''} ${t.currency}</td>
+        <td><strong style="color:var(--red);">+${t.ptsEarned} pts</strong></td>
+        <td><span class="badge b-${t.status}">${t.status}</span></td>
+        <td>${new Date(t.date).toLocaleDateString('en-SG')}</td>
+      </tr>`).join('')+
+      '</tbody></table></div>';
+  }
+
+  // Redeem grid
+  document.getElementById('redeem-pts-badge').textContent=(user.points||0).toLocaleString()+' pts available';
+  document.getElementById('redeem-grid').innerHTML=REWARDS.map(r=>`
+    <div class="redeem-card ${r.featured?'featured':''}">
+      ${r.featured?'<div class="redeem-flight-badge">✈ TOP REWARD</div><br/>':''}
+      <div class="redeem-icon">${r.icon}</div>
+      <div class="redeem-title">${r.title}</div>
+      <div class="redeem-pts">${r.pts.toLocaleString()} pts</div>
+      <div class="redeem-desc">${r.desc}</div>
+      <button class="redeem-btn" ${(user.points||0)<r.pts?'disabled':''} onclick="redeemReward('${r.id}','${r.title}',${r.pts})">
+        ${(user.points||0)>=r.pts?'Redeem Now':'Need '+(r.pts-(user.points||0)).toLocaleString()+' more pts'}
+      </button>
+    </div>`).join('');
+
+  // Ref & API
+  document.getElementById('user-ref-link').textContent='singx.co?ref=ROYALKINGS&rid='+user.refCode;
+  const keyEl=document.getElementById('user-api-key');
+  keyEl.textContent='rk_live_••••••••••••••••••••••••';
+  keyEl.dataset.key=user.apiKey||'';
+}
+
+function revealKey(){
+  const el=document.getElementById('user-api-key');
+  const shown=el.textContent===el.dataset.key;
+  el.textContent=shown?'rk_live_••••••••••••••••••••••••':el.dataset.key;
+}
+
+async function redeemReward(id,title,pts){
+  const session=LOCAL.session();if(!session)return;
+  const users=await dbGetUsers();
+  const user=users.find(u=>u.email===session.email);
+  if(!user||(user.points||0)<pts){alert('Insufficient points.');return;}
+  user.points=(user.points||0)-pts;
+  await dbSaveUser(user);
+  LOCAL.saveSession(user);
+  const rd={id:'RD-'+Date.now(),userId:user.email,rewardId:id,rewardTitle:title,ptsUsed:pts,status:'pending',date:new Date().toISOString()};
+  await dbSaveRedemption(rd);
+  if(id==='flight_india') showPopup('✈ Flight Claimed!','Our team will contact you within 48 hours to arrange your ticket to India!');
+  else showPopup('-'+pts.toLocaleString()+' pts',title+' redeemed! Check your email.');
+  await renderUser(user);
+}
+
+// ══════════════════════════════════════════════════
+//  ADMIN RENDER
+// ══════════════════════════════════════════════════
+async function renderAdmin(){
+  const users=await dbGetUsers();
+  const members=users.filter(u=>u.role!=='admin');
+  const txs=await dbGetTxs(null);
+  const redemptions=await dbGetRedemptions(null);
+
+  const totVol=txs.reduce((s,t)=>s+parseFloat(t.amtSGD||0),0);
+  const totPts=members.reduce((s,u)=>s+(u.points||0),0);
+  const flights=redemptions.filter(r=>r.rewardId==='flight_india').length;
+
+  document.getElementById('a-users').textContent=members.length;
+  document.getElementById('a-vol').textContent='SGD '+Math.round(totVol).toLocaleString();
+  document.getElementById('a-pts').textContent=totPts.toLocaleString();
+  document.getElementById('a-tx').textContent=txs.length;
+  document.getElementById('a-flights').textContent=flights;
+
+  // Populate user dropdown
+  const sel=document.getElementById('tx-email');
+  sel.innerHTML=members.map(u=>`<option value="${u.email}">${u.firstName} ${u.lastName} (${u.email})</option>`).join('');
+  genTxId();
+
+  renderMembersTable(members,txs);
+  renderAllTx(txs,users);
+  renderRedemptions(redemptions,users);
+}
+
+function renderMembersTable(members,txs){
+  document.getElementById('members-tbody').innerHTML=members.map((u,i)=>{
+    const tier=getTier(u.points||0);
+    const utxs=txs.filter(t=>t.userId===u.email);
+    return `<tr>
+      <td style="color:var(--txtm);">${i+1}</td>
+      <td><strong>${u.firstName} ${u.lastName}</strong></td>
+      <td style="font-size:12px;">${u.email}</td>
+      <td style="font-size:12px;">${u.phone||'—'}</td>
+      <td><span class="badge" style="background:rgba(255,215,0,.12);color:#92400e;">${tier.icon} ${tier.name}</span></td>
+      <td><strong style="color:var(--red);">${(u.points||0).toLocaleString()}</strong></td>
+      <td>SGD ${(u.totalSGD||0).toLocaleString()}</td>
+      <td>${u.txCount||0}</td>
+      <td><code style="font-size:10px;color:var(--txtm);">${(u.apiKey||'').substring(0,20)}...</code></td>
+      <td style="font-size:12px;">${new Date(u.joined).toLocaleDateString('en-SG')}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAllTx(txs,users){
+  document.getElementById('all-tx-tbody').innerHTML=txs.slice().reverse().map(t=>{
+    const u=users.find(u=>u.email===t.userId);
+    return `<tr>
+      <td><code style="font-size:11px;">${t.id}</code></td>
+      <td>${u?u.firstName+' '+u.lastName:t.userId}</td>
+      <td>SGD ${parseFloat(t.amtSGD).toLocaleString('en-SG',{minimumFractionDigits:2})}</td>
+      <td>${CFLAGS[t.currency]||''} ${t.currency}</td>
+      <td><strong style="color:var(--red);">+${t.ptsEarned}</strong></td>
+      <td style="font-size:11px;color:var(--txtm);">${t.ref||'—'}</td>
+      <td><span class="badge b-${t.status}">${t.status}</span></td>
+      <td style="font-size:12px;">${new Date(t.date).toLocaleDateString('en-SG')}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderRedemptions(redemptions,users){
+  const tbody=document.getElementById('redeem-tbody');
+  if(!redemptions.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--txtm);">No redemptions yet</td></tr>';return;}
+  tbody.innerHTML=redemptions.slice().reverse().map(r=>{
+    const u=users.find(u=>u.email===r.userId);
+    const isFlght=r.rewardId==='flight_india';
+    return `<tr>
+      <td>${u?u.firstName+' '+u.lastName:r.userId}</td>
+      <td>${isFlght?'✈️ ':''}${r.rewardTitle}</td>
+      <td><strong style="color:var(--red);">−${r.ptsUsed.toLocaleString()}</strong></td>
+      <td><span class="badge b-pending">${r.status}</span></td>
+      <td style="font-size:12px;">${new Date(r.date).toLocaleDateString('en-SG')}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function filterMembers(q){
+  const users=await dbGetUsers();
+  const members=users.filter(u=>u.role!=='admin');
+  const txs=await dbGetTxs(null);
+  const filtered=q?members.filter(u=>(u.firstName+' '+u.lastName+' '+u.email).toLowerCase().includes(q.toLowerCase())):members;
+  renderMembersTable(filtered,txs);
+}
+
+function previewPts(){
+  const email=document.getElementById('tx-email').value;
+  const amt=parseFloat(document.getElementById('tx-amt').value)||0;
+  const wrap=document.getElementById('pts-preview');
+  if(!amt){wrap.style.display='none';return;}
+  const users=LOCAL.users();
+  const user=users.find(u=>u.email===email);
+  if(!user){wrap.style.display='none';return;}
+  const {pts,base,multi,bonus,tier}=calcPts(amt,user.points||0,user.txCount||0);
+  wrap.style.display='block';
+  document.getElementById('pts-preview-body').innerHTML=
+    `Base: ${base} pts (SGD ${amt} ÷ 10) × <strong>${multi}× ${tier}</strong> = <strong style="color:var(--red);">${pts} pts${bonus}</strong> for <strong>${user.firstName} ${user.lastName}</strong>`;
+}
+
+function switchAdmTab(id){
+  document.querySelectorAll('.adm-tab,.adm-panel').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.adm-tab').forEach(t=>{if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes(id))t.classList.add('active');});
+}
+
+async function postTransfer(){
+  const email=document.getElementById('tx-email').value;
+  const txId=document.getElementById('tx-id').value.trim()||genTxId();
+  const amt=parseFloat(document.getElementById('tx-amt').value);
+  const cur=document.getElementById('tx-cur').value;
+  const ref=document.getElementById('tx-ref').value.trim()||'SINGX-'+Date.now();
+  const status=document.getElementById('tx-status').value;
+  const el=document.getElementById('post-ok');
+  el.classList.add('hidden');
+  if(!amt||amt<=0){alert('Please enter a valid amount.');return;}
+  const users=await dbGetUsers();
+  const user=users.find(u=>u.email===email);
+  if(!user){alert('Member not found.');return;}
+  const allTxs=await dbGetTxs(null);
+  if(allTxs.find(t=>t.id===txId)){alert('Transfer ID already exists.');return;}
+  let ptsEarned=0;
+  if(status==='completed'){
+    const {pts}=calcPts(amt,user.points||0,user.txCount||0);
+    ptsEarned=pts;
+    user.points=(user.points||0)+ptsEarned;
+    user.totalSGD=(user.totalSGD||0)+amt;
+    user.txCount=(user.txCount||0)+1;
+    await dbSaveUser(user);
+  }
+  await dbSaveTx({id:txId,userId:email,amtSGD:amt,currency:cur,ref,status,ptsEarned,date:new Date().toISOString()});
+  el.textContent='✓ Transfer '+txId+' posted. '+(ptsEarned>0?ptsEarned+' pts credited to '+user.firstName+'.':'Pending.');
+  el.classList.remove('hidden');
+  await renderAdmin();
+  genTxId();
+  document.getElementById('tx-amt').value='';
+  document.getElementById('tx-ref').value='';
+  document.getElementById('pts-preview').style.display='none';
+  if(ptsEarned>0) showPopup('+'+ptsEarned+' pts',user.firstName+' — points credited!');
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',async()=>{
+  await initDB();
+  const session=LOCAL.session();
+  if(session){
+    if(session.role==='admin'){await renderAdmin();showScreen('screen-admin');}
+    else{await renderUser(session);showScreen('screen-user');}
+  }
+  // Show back links
+  document.querySelectorAll('.nav-link-btn').forEach(l=>l.style.display='inline-flex');
+});
+</script>
+</body>
+</html>
